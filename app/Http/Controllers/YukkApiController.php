@@ -48,22 +48,20 @@ class YukkApiController extends Controller
             'grantType' => 'client_credentials'
         ];
 
-        $response = Http::withHeaders($headers)->post($baseUrl.$endpoint, $body);
+        Http::withHeaders($headers)->post($baseUrl.$endpoint, $body);
 
-        return $base64Signature . ' '. $this->generateTimestamp();
+        return response()->json();
     }
 
     public function generateQR()
     {
         $generateToken = $this->generateAccessToken();
         $accessToken = $generateToken['accessToken'];
-        // $validated = request()->validate([
-        //     'amount' => 'required|numeric'
-        // ]);
+        $amount = request()->input('amount') ?? '';
         $requestBody = [
             'partnerReferenceNo' => 'SNAP_QRIS_JADE_00002024',
             'amount' => [
-                'value' => '1400000.00',
+                'value' => '0.00',
                 'currency' => 'IDR'
             ],
             'feeAmount' => [
@@ -95,9 +93,9 @@ class YukkApiController extends Controller
             'X-EXTERNAL-ID' => $unique,
             'CHANNEL-ID' => '00001'
         ];
-        $response = Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
-
-        return $response;
+        Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
+        $result = response()->json();
+        return $result;
     }
 
     // YUKK hit API to JADE
