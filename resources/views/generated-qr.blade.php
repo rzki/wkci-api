@@ -14,7 +14,7 @@
                     <h4 class="fw-bold mb-3">Please scan QR code above to pay</h4>
                     <h5>Click button below to check the status of your order</h5>
                     <br>
-                    <a href="" class="btn btn-success btn-block">Check Payment Status</a>
+                    <a href="{{ route('query_payment') }}" class="btn btn-success btn-block">Check Payment Status</a>
                 </div>
             </div>
         </div>

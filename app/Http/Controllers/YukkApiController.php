@@ -96,18 +96,42 @@ class YukkApiController extends Controller
         ];
         $sendRequestQR = Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
         $result = $sendRequestQR->json();
-        $partnerReferenceNo = $result['partnerReferenceNo'];
+        // $partnerReferenceNo = $result['partnerReferenceNo'];
         $qr = new DNS2D();
         $qr = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
         // Pass same variable to queryPayment function
-        $this->queryPayment($generateToken, $accessToken, $amount, $requestBody, $minifiedRequestBody, $partnerReferenceNo);
         return view('generated-qr', compact('result', 'qr'));
         // return $result;
     }
 
-    public function queryPayment($generateToken, $accessToken, $amount, $requestBody, $minifiedRequestBody, $partnerReferenceNo)
+    public function queryPayment()
     {
+        $generateAccessToken = $this->generateAccessToken();
+        $accessToken = $generateAccessToken['accessToken'];
+        $unique = random_int(12,12).round(microtime(true)*10000);
+        $endpoint = "/1.0/qr/qr-mpm-query";
+        $body = [
+            'originalPartnerReferenceNo' => $this->generateQR()->result['partnerReferenceNo'],
+            'serviceCode' => '47',
+            'externalStoreID' => env('YUKK_STORE_ID')
+        ];
+        $minifyRequestBody = json_encode($body);
+        $stringToSign = "POST:"."/1.0/qr/qr-mpm-query:".$accessToken.":".strtolower(hash("sha256", $minifyRequestBody)).":".$this->generateTimestamp();
+        $symmetricSignature = base64_encode(hash_hmac('sha512', $stringToSign, env('YUKK_CLIENT_SECRET'), true));
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '.$accessToken,
+            'X-TIMESTAMP' => $this->generateTimestamp(),
+            'X-SIGNATURE' => $symmetricSignature,
+            'X-PARTNER-ID' => env('YUKK_CLIENT_ID'),
+            'X-EXTERNAL-ID' => $unique,
+            'CHANNEL-ID' => '00001'
+        ];
 
+
+        $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
+        $queryResult = $sendQueryPayment->json();
+        return view('query-payment', compact('queryResult'));
     }
     // YUKK hit API to JADE
     public function generateAccessTokenForYUKK()
