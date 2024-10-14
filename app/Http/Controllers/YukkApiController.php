@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use GuzzleHttp\Client;
+use Milon\Barcode\DNS2D;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class YukkApiController extends Controller
 {
@@ -23,7 +24,7 @@ class YukkApiController extends Controller
         $privateKeyFile = asset('private/pk.pem');
         $baseUrl = $this->baseUrl;
         $endpoint = "/1.0/access-token/b2b";
-        $clientId = env('JADE_CLIENT_ID');
+        $clientId = env('YUKK_CLIENT_ID');
 
         // String to sign
         $stringToSign = $clientId . '|' . $this->generateTimestamp();
@@ -40,7 +41,7 @@ class YukkApiController extends Controller
         $headers = [
             'Content-Type' => 'application/json',
             'X-TIMESTAMP' => $this->generateTimestamp(),
-            'X-CLIENT-KEY' => env('JADE_CLIENT_ID'),
+            'X-CLIENT-KEY' => env('YUKK_CLIENT_ID'),
             'X-SIGNATURE' => $base64Signature,
         ];
 
@@ -48,9 +49,9 @@ class YukkApiController extends Controller
             'grantType' => 'client_credentials'
         ];
 
-        Http::withHeaders($headers)->post($baseUrl.$endpoint, $body);
+        $response = Http::withHeaders($headers)->post($baseUrl.$endpoint, $body);
 
-        return response()->json();
+        return $response->json();
     }
 
     public function generateQR()
@@ -59,9 +60,9 @@ class YukkApiController extends Controller
         $accessToken = $generateToken['accessToken'];
         $amount = request()->input('amount') ?? '';
         $requestBody = [
-            'partnerReferenceNo' => 'SNAP_QRIS_JADE_00002024',
+            'partnerReferenceNo' => "SNAP_QRIS_JADE_".uniqid(),
             'amount' => [
-                'value' => '0.00',
+                'value' => '1.00',
                 'currency' => 'IDR'
             ],
             'feeAmount' => [
@@ -93,11 +94,21 @@ class YukkApiController extends Controller
             'X-EXTERNAL-ID' => $unique,
             'CHANNEL-ID' => '00001'
         ];
-        Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
-        $result = response()->json();
-        return $result;
+        $sendRequestQR = Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
+        $result = $sendRequestQR->json();
+        $partnerReferenceNo = $result['partnerReferenceNo'];
+        $qr = new DNS2D();
+        $qr = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
+        // Pass same variable to queryPayment function
+        $this->queryPayment($generateToken, $accessToken, $amount, $requestBody, $minifiedRequestBody, $partnerReferenceNo);
+        return view('generated-qr', compact('result', 'qr'));
+        // return $result;
     }
 
+    public function queryPayment($generateToken, $accessToken, $amount, $requestBody, $minifiedRequestBody, $partnerReferenceNo)
+    {
+
+    }
     // YUKK hit API to JADE
     public function generateAccessTokenForYUKK()
     {
