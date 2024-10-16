@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->date('date');
             $table->string('price');
-            $table->
+            $table->string('day');
+            $table->string('type');
+            $table->string('discount')->nullable();
             $table->timestamps();
         });
     }
