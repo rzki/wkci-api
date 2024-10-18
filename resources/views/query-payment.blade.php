@@ -22,5 +22,6 @@
                 </div>
             </div>
         </div>
+        {{-- {{ json_encode($queryResult) }} --}}
     </div>
 @endsection

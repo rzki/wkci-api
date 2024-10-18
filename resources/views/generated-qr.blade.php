@@ -18,5 +18,6 @@
                 </div>
             </div>
         </div>
+        {{-- {{ json_encode($result) }} --}}
     </div>
 @endsection
