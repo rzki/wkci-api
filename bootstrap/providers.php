@@ -1,9 +1,9 @@
 <?php
 
 use App\Providers\AppServiceProvider;
-use App\Providers\Filament\AdminPanelProvider;
+use Spatie\Menu\Laravel\MenuServiceProvider;
 
 return [
     AppServiceProvider::class,
-    AdminPanelProvider::class,
+    MenuServiceProvider::class
 ];
