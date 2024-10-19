@@ -137,6 +137,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'Menu' => Spatie\Menu\Laravel\Facades\Menu::class
+        'Menu' => Spatie\Menu\Laravel\Facades\Menu::class,
+        'Link' => Spatie\Menu\Link::class
     ])->toArray(),
 ];
