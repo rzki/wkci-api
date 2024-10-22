@@ -30,7 +30,7 @@
             <span class="sidebar-icon me-3">
                 <i class="fas fa-list-check"></i>
             </span>
-            <span class="sidebar-text">{{ __('Forms') }}</span>
+            <span class="sidebar-text">{{ __('Form') }}</span>
         </a>
     </li>
 
