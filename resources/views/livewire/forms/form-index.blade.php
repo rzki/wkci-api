@@ -5,49 +5,47 @@
                 <div class="col-12 px-0">
                     <div class="card border-0 shadow">
                         <div class="card-body">
-                            <h2 class="fs-5 fw-bold mb-3">{{ __('All Products') }}</h2>
+                            <h2 class="fs-5 fw-bold mb-3">{{ __('All Forms') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
-                                    <div class="row mb-3">
+                                    {{-- <div class="row mb-3">
                                         <div class="col d-flex justify-content-end pb-3">
                                             <a href="{{ route('products.create') }}"
                                                 class="btn btn-success ml-3 text-white" wire:navigate><i
-                                                    class="fa fa-plus"
-                                                    aria-hidden="true"></i>{{ __(' New Products') }}</a>
+                                                    class="fa fa-plus" aria-hidden="true"></i>{{ __(' New Products')
+                                                }}</a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="table-wrapper table-responsive">
                                         <table class="table striped-table text-black text-center">
                                             <thead>
                                                 <tr>
                                                     <th style="width: 2em;">No</th>
-                                                    <th>{{ __('Code') }}</th>
-                                                    <th>{{ __('Name') }}</th>
-                                                    <th>{{ __('Date') }}</th>
-                                                    <th>{{ __('Time') }}</th>
-                                                    <th>{{ __('Price') }}</th>
-                                                    <th>{{ __('Day') }}</th>
-                                                    <th>{{ __('Type') }}</th>
-                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Nama (STR)') }}</th>
+                                                    <th>{{ __('Nama (KTP)') }}</th>
+                                                    <th>{{ __('NIK') }}</th>
+                                                    <th>{{ __('Nomor NPA') }}</th>
+                                                    <th>{{ __('Cabang PDGI') }}</th>
+                                                    <th>{{ __('No Telepon') }}</th>
+                                                    <th>{{ __('Tipe Peserta Seminar') }}</th>
+                                                    <th>{{ __('Hands-On') }}</th>
+                                                    <th style="width: 5em;">{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($products as $product)
+                                                @foreach ($forms as $form)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $product->code ?? '' }}</td>
-                                                        <td>{{ $product->name ?? '' }}</td>
-                                                        <td>{{ date('d/m/Y', strtotime($product->date)) }}</td>
-                                                        <td>{{ date('H:i', strtotime($product->start_time)) }} - {{ date('H:i', strtotime($product->end_time)) }}</td>
-                                                        <td>{{ 'Rp '.number_format($product->price, 2, ',', '.') }}</td>
-                                                        <td>{{ $product->day ?? '' }}</td>
-                                                        <td>{{ $product->type ?? '' }}</td>
+                                                        <td>{{ $form->name_str ?? '' }}</td>
+                                                        <td>{{ $form->full_name ?? '' }}</td>
+                                                        <td>{{ $form->nik ?? '' }}</td>
+                                                        <td>{{ $form->npa ?? '' }}</td>
+                                                        <td>{{ $form->cabang_pdgi ?? '' }}</td>
+                                                        <td>{{ $form->no_telepon ?? '' }}</td>
+                                                        <td>{{ $form->seminar_type ?? '' }}</td>
+                                                        <td>{{ $form->attend_to ?? '' }}</td>
                                                         <td>
-                                                            <a href="{{ route('products.edit', $product->productId) }}"
-                                                                class="btn btn-info"><i class="fas fa-edit"></i></a>
-                                                            <button class="btn btn-danger"
-                                                                wire:click.prevent="deleteConfirm('{{ $product->productId }}')"><i
-                                                                    class="fas fa-trash"></i></button>
+                                                            <a href="{{ route('forms.edit', $form->formId) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -67,7 +65,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                                                {{ $products->links() }}
+                                                {{ $forms->links() }}
                                             </div>
                                         </div>
                                     </div>
@@ -81,8 +79,8 @@
     </div>
 </div>
 @script
-    <script>
-        window.addEventListener('delete-confirmation', event => {
+<script>
+    window.addEventListener('delete-confirmation', event => {
             Swal.fire({
                 title: "Are you sure?",
                 text: "Product will be deleted permanently!",
@@ -97,17 +95,17 @@
                 }
             });
         })
-    </script>
-    <script>
-        window.addEventListener('print-qr', event => {
+</script>
+<script>
+    window.addEventListener('print-qr', event => {
             $wire.dispatch('printThisQR');
         })
-    </script>
+</script>
 @endscript
 @if (session()->has('alert'))
-    @script
-        <script>
-            const alerts = @json(session()->get('alert'));
+@script
+<script>
+    const alerts = @json(session()->get('alert'));
             const title = alerts.title;
             const icon = alerts.type;
             const toast = alerts.toast;
@@ -125,6 +123,6 @@
                 timerProgressBar: progbar,
                 showConfirmButton: confirm
             });
-        </script>
-    @endscript
+</script>
+@endscript
 @endif

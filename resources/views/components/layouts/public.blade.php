@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>{{ $title .' - Jakarta Dental Exhibition 2024' ?? 'Jakarta Dental Exhibition 2024' }}</title>
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/brands.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/regular.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/solid.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/sweetalert2/sweetalert2.min.css') }}">
+        <!-- Styles -->
+        @vite('resources/sass/app.scss')
+
+        <!-- Scripts -->
+        @vite('resources/js/app.js')
+    </head>
+    <body>
+        <main class="content ms-0 py-4">
+            {{ $slot }}
+        </main>
+
+        @yield('scripts')
+        <script src="{{ asset('assets/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    </body>
+</html>

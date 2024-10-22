@@ -9,17 +9,21 @@ use Livewire\Attributes\Title;
 
 class ProductCreate extends Component
 {
-    public $name, $day, $type, $date, $price;
+    public $code, $name, $desc, $day, $type, $date, $start_time, $end_time, $price;
 
     public function create()
     {
         Product::create([
             'productId' => Str::orderedUuid(),
+            'code' => $this->code,
             'name' => $this->name,
+            'description' => ucwords($this->desc),
             'date' => $this->date,
-            'type' => $this->type,
             'price' => $this->price,
-            'day' => $this->day
+            'day' => $this->day,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+            'type' => $this->type
         ]);
 
         session()->flash('alert', [

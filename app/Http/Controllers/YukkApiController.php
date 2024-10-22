@@ -63,12 +63,12 @@ class YukkApiController extends Controller
     {
         $generateToken = $this->generateAccessToken();
         $accessToken = $generateToken['accessToken'];
-        $amount = request()->input('amount') ?? '';
+        $amount = request()->input('amount') ?? '1';
         $this->generatePartnerReferenceNo();
         $requestBody = [
             'partnerReferenceNo' => Cache::get('partnerRefNo'),
             'amount' => [
-                'value' => '1.00',
+                'value' => $amount.'.00',
                 'currency' => 'IDR'
             ],
             'feeAmount' => [
@@ -104,11 +104,11 @@ class YukkApiController extends Controller
         $result = $sendRequestQR->json();
         Cache::put('generateQrResult', $result, now()->addSeconds(900));
         $cachedResult = Cache::get('generateQrResult');
-        $qr = new DNS2D();
-        $qr = $qr->getBarcodeHTML($cachedResult['qrContent'], 'QRCODE', 4, 4);
+        // $qr = new DNS2D();
+        // $qr = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
         // Pass same variable to queryPayment function
         // return view('generated-qr', compact('result', 'qr'));
-        return $result;
+        return $cachedResult;
     }
 
     public function queryPayment()
@@ -140,12 +140,12 @@ class YukkApiController extends Controller
 
         $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
         $queryResult = $sendQueryPayment->json();
-        // if($queryResult['transactionStatusDesc'] == 'success'){
-        //     return to_route('notify_payment');
-        // }else{
-        //     return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
-        // }
-        return $queryResult;
+        if($queryResult['transactionStatusDesc'] == 'success'){
+            return to_route('notify_payment');
+        }else{
+            return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
+        }
+        // return $queryResult;
     }
     // YUKK hit API to JADE
     public function generateAccessTokenForYUKK()
