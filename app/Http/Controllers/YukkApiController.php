@@ -143,7 +143,8 @@ class YukkApiController extends Controller
         if($queryResult['transactionStatusDesc'] == 'success'){
             return to_route('notify_payment');
         }else{
-            return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
+            // return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
+            return $queryResult;
         }
         // return $queryResult;
     }
