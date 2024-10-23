@@ -239,11 +239,11 @@ class YukkApiController extends Controller
                 'X-SIGNATURE' => $symmetricSignature
             ];
 
-        // return [$headers, $body];
+        return [$headers, $body];
         // return $accessToken;
-        return response()->json([
-            'responseCode' => '205200',
-            'responseMessage' => 'Request has been processed successfully'
-        ]);
+        // return response()->json([
+        //     'responseCode' => '205200',
+        //     'responseMessage' => 'Request has been processed successfully'
+        // ]);
     }
 }
