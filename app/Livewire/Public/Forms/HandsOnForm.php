@@ -69,7 +69,6 @@ class HandsOnForm extends Component
             }
         }
         $code = implode(', ', $selectedOptionCodes);
-        $amount = $request->session()->put('amount', $this->totalAmount);
         Form::create([
             'formId' => Str::orderedUuid(),
             'name_str' => $this->name_str,
@@ -83,7 +82,7 @@ class HandsOnForm extends Component
             'attend_to' => $code,
             'form_type' => 'Seminar'
         ]);
-        return $this->redirectRoute('generate_qr');
+        return $this->redirectRoute('generate_qr', ['amount' => $this->totalAmount]);
     }
     #[Layout('components.layouts.public')]
     #[Title('Hands-On Registration')]
