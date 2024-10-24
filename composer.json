@@ -13,7 +13,8 @@
         "laravel/ui": "^4.5",
         "livewire/livewire": "*",
         "milon/barcode": "^11.0",
-        "spatie/laravel-menu": "^4.2"
+        "spatie/laravel-menu": "^4.2",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
