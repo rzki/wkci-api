@@ -223,7 +223,7 @@ class YukkApiController extends Controller
                 'value' => $queryResult['amount']['value'],
                 'currency' => 'IDR',
             ],
-            'externalStoreID' => '137289347298374',
+            'externalStoreID' => env('YUKK_STORE_ID'),
             'additionalInfo' => [
                 'additionalField' => $queryResult['additionalInfo']['additionalField'],
                 ]
