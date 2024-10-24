@@ -226,7 +226,6 @@ class YukkApiController extends Controller
             'externalStoreID' => env('YUKK_STORE_ID'),
             'additionalInfo' => [
                 'additionalField' => $queryResult['additionalInfo']['additionalField'],
-                'rrn' => '210430233071'
                 ]
             ];
             $minifyRequestBody = json_encode($body);
