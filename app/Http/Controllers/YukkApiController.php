@@ -239,11 +239,44 @@ class YukkApiController extends Controller
                 'X-SIGNATURE' => $symmetricSignature
             ];
 
-        return [$headers, $body];
+//        return [$headers, $body];
         // return $accessToken;
-        // return response()->json([
-        //     'responseCode' => '205200',
-        //     'responseMessage' => 'Request has been processed successfully'
-        // ]);
+        if(!$body['originalReferenceNo']){
+            return response()->json([
+                "responseCode" => "4005202",
+                "responseMessage" => "Invalid Mandatory Field originalReferenceNo"
+            ]);
+        }elseif (!$body['latestTransactionStatus']){
+            return response()->json([
+                "responseCode" => "4005202",
+                "responseMessage" => "Invalid Mandatory Field latestTransactionStatus"
+            ]);
+        }elseif (!$body['transactionStatusDesc']){
+            return response()->json([
+                "responseCode" => "4005202",
+                "responseMessage" => "Invalid Mandatory Field transactionStatusDesc"
+            ]);
+        }elseif (!$body['amount']['value']){
+            return response()->json([
+                "responseCode" => "4005202",
+                "responseMessage" => "Invalid Mandatory Field amount.value"
+            ]);
+        }elseif ($body['externalStoreID'] !== env('YUKK_STORE_ID')){
+            return response()->json([
+                "responseCode" => "4005202",
+                "responseMessage" => "Invalid Mandatory Field externalStoreID"
+            ]);
+        }elseif (!$body['additionalInfo']['rrn']){
+            return response()->json([
+                "responseCode" => "4005202",
+                "responseMessage" => "Invalid Mandatory Field additionalInfo.rrn"
+            ]);
+        }else{
+            response()->json([
+                'responseCode' => '205200',
+                'responseMessage' => 'Request has been processed successfully'
+            ]);
+        }
+//         return [$headers, $body];
     }
 }
