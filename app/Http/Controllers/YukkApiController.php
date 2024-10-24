@@ -276,8 +276,8 @@ class YukkApiController extends Controller
                 'responseCode' => '2005200',
                 'responseMessage' => 'Request has been processed successfully'
             ]);
-            return [$headers, $body, $response];
-//            return $response;
+//            return [$headers, $body, $response];
+            return $response;
         }
     }
 }
