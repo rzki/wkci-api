@@ -223,7 +223,7 @@ class YukkApiController extends Controller
                 'value' => $queryResult['amount']['value'],
                 'currency' => 'IDR',
             ],
-            'externalStoreID' => env('YUKK_STORE_ID'),
+            'externalStoreID' => '137289347298374',
             'additionalInfo' => [
                 'additionalField' => $queryResult['additionalInfo']['additionalField'],
                 ]
@@ -272,7 +272,7 @@ class YukkApiController extends Controller
             ]);
         }else{
             $response = response()->json([
-                'responseCode' => '205200',
+                'responseCode' => '2005200',
                 'responseMessage' => 'Request has been processed successfully'
             ]);
 //            return [$headers, $body, $response];
