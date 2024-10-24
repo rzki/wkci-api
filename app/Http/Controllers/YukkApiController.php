@@ -272,11 +272,12 @@ class YukkApiController extends Controller
                 "responseMessage" => "Invalid Mandatory Field additionalInfo.rrn"
             ]);
         }else{
-            response()->json([
+            $response = response()->json([
                 'responseCode' => '205200',
                 'responseMessage' => 'Request has been processed successfully'
             ]);
+            return [$headers, $body, $response];
+
         }
-//         return [$headers, $body];
     }
 }
