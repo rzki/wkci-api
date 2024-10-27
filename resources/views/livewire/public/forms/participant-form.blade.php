@@ -6,7 +6,7 @@
                     2024
                 </h2>
                 <div class="card-body">
-                    <form wire:submit.prevent='submit'>
+                    <form wire:submit.prevent='create'>
                         <div class="row">
                             <div class="form-group mb-4">
                                 <label for="email" class="form-label fw-bold">{{ __('Email Aktif') }}</label>

@@ -41,7 +41,7 @@ class ParticipantForm extends Component
             'showConfirmButton' => false,
         ]);
         Mail::to($this->email)->send(new ParticipantFormMail($participant));
-        return $this->redirectRoute('participant_form');
+        return $this->redirectRoute('forms.participant.detail', $uuid);
     }
     #[Layout('components.layouts.public')]
     #[Title('Participant Registration')]
