@@ -41,31 +41,31 @@
                         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Name</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->full_name }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->full_name }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Email</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->email }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->email }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">NIK</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->nik }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->nik }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">NPA</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->npa }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->npa }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">PDGI Cabang</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->cabang_pdgi ?? '' }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->cabang_pdgi ?? '' }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Phone Number</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->phone_number }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->phone_number }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Seminar & HO</td>
-{{--                                <td style="padding: 8px;">{{ $handsOn->attended }}</td>--}}
+                                <td style="padding: 8px;">{{ $handsOn->attended }}</td>
                             </tr>
                         </table>
                     </td>
@@ -83,7 +83,7 @@
                 <!-- Button -->
                 <tr>
                     <td align="center" style="padding: 20px;">
-                        <a href="#" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration: none; padding:
+                        <a href="{{ route('forms.detail', $handsOn->formId) }}" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration: none; padding:
                         12px 24px;
                         font-size:
                         16px;
