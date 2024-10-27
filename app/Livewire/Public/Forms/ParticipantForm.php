@@ -3,6 +3,7 @@
 namespace App\Livewire\Public\Forms;
 
 use App\Mail\HandsOnRegistrationMail;
+use App\Mail\ParticipantFormMail;
 use App\Models\FormParticipant;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -39,7 +40,7 @@ class ParticipantForm extends Component
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
-        Mail::to($this->email)->send(new HandsOnRegistrationMail($participant));
+        Mail::to($this->email)->send(new ParticipantFormMail($participant));
         return $this->redirectRoute('participant_form');
     }
     #[Layout('components.layouts.public')]
