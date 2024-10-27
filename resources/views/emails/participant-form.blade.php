@@ -71,7 +71,7 @@
                 <!-- Button -->
                 <tr>
                     <td align="center" style="padding: 20px;">
-                        <a href="{{ route('forms.participant.detail', $handsOn->formId) }}" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration:
+                        <a href="{{ route('forms.participant.detail', $participant->formId) }}" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration:
                         none; padding:
                         12px 24px;
                         font-size:
