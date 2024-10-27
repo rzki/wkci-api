@@ -8,10 +8,12 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Milon\Barcode\DNS2D;
 
 class HandsOnForm extends Component
 {
@@ -71,7 +73,11 @@ class HandsOnForm extends Component
             }
         }
         $code = implode(', ', $selectedOptionCodes) ?? '';
-        $uuid = Str::uuid();
+        $uuid = Str::orderedUuid();
+        $qr = new DNS2D();
+        $qr = base64_decode($qr->getBarcodePNG(route('forms.detail', $uuid), 'QRCODE'));
+        $path = 'img/forms/' . $uuid . '.png';
+        Storage::disk('public')->put($path, $qr);
         $handsOn = Form::create([
             'formId' => $uuid,
             'name_str' => $this->name_str,
@@ -82,9 +88,9 @@ class HandsOnForm extends Component
             'cabang_pdgi' => $this->pdgi_cabang,
             'phone_number' => $this->no_telepon,
             'seminar_type' => $seminar->name ?? '',
-            'attend_to' => $code,
+            'attended' => $code,
             'amount' => $this->totalAmount,
-            'form_type' => 'seminar'
+            'barcode' => $path,
         ]);
         Mail::to($this->email)->send(new HandsOnRegistrationMail($handsOn));
         return $this->redirectRoute('generate_qr', ['amount' => $this->totalAmount]);
