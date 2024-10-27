@@ -57,7 +57,7 @@
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">PDGI Cabang</td>
-                                <td style="padding: 8px;">{{ $handsOn->cabang_pdgi ?? '' }}</td>
+                                <td style="padding: 8px;">{{ $handsOn->cabang_pdgi ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Phone Number</td>
