@@ -100,7 +100,7 @@
                             <tr>
                                 <td style="padding: 0 10px;">
                                     <a href="https://www.instagram.com/jktdental.id" target="_blank" style="text-decoration: none;">
-                                        <img src="{{ asset('images/icons/instagram-brands-solid.svg') }}" alt="Instagram" width="24" style="display: block;">
+                                        <img src="{{ asset('images/icons/instagram-brands-solid.png') }}" alt="Instagram" width="24" style="display: block;">
                                     </a>
                                 </td>
                             </tr>
