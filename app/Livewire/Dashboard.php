@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Mail\HandsOnRegistrationMail;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;

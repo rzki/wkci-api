@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Public\Forms;
 
+use App\Mail\HandsOnRegistrationMail;
 use App\Models\Form;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -68,9 +70,10 @@ class HandsOnForm extends Component
                 }
             }
         }
-        $code = implode(', ', $selectedOptionCodes);
-        Form::create([
-            'formId' => Str::orderedUuid(),
+        $code = implode(', ', $selectedOptionCodes) ?? '';
+        $uuid = Str::uuid();
+        $handsOn = Form::create([
+            'formId' => $uuid,
             'name_str' => $this->name_str,
             'full_name' => $this->name_ktp,
             'email' => $this->email,
@@ -78,10 +81,12 @@ class HandsOnForm extends Component
             'npa' => $this->npa,
             'cabang_pdgi' => $this->pdgi_cabang,
             'phone_number' => $this->no_telepon,
-            'seminar_type' => $seminar->code,
+            'seminar_type' => $seminar->name,
             'attend_to' => $code,
-            'form_type' => 'Seminar'
+            'amount' => $this->totalAmount,
+            'form_type' => 'seminar'
         ]);
+        Mail::to($this->email)->send(new HandsOnRegistrationMail($handsOn));
         return $this->redirectRoute('generate_qr', ['amount' => $this->totalAmount]);
     }
     #[Layout('components.layouts.public')]

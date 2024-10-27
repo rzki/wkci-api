@@ -45,9 +45,9 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
-                                    <label for="pdgi_cabang" class="form-label fw-bold">{{ __('PDGI Cabang') }}</label>
+                                    <label for="pdgi_cabang" class="form-label fw-bold">{{ __('PDGI Cabang (Opsional)') }}</label>
                                     <input type="text" name="pdgi_cabang" id="pdgi_cabang" class="form-control"
-                                        wire:model='pdgi_cabang' required>
+                                        wire:model='pdgi_cabang'>
                                 </div>
                             </div>
                             <div class="col-lg-6">

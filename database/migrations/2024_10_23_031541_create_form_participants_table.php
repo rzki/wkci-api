@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('form_participants', function (Blueprint $table) {
             $table->id();
+            $table->uuid('formId');
             $table->string('full_name');
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('origin');
+            $table->tinyText('barcode')->nullable();
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('seminar')->nullable();
             $table->string('attended')->nullable();
             $table->string('amount')->nullable();
+            $table->tinyText('barcode')->nullable();
             $table->string('form_type');
             $table->timestamps();
         });
