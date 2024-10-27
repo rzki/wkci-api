@@ -30,7 +30,7 @@
                 <tr>
                     <td style="padding: 10px 20px;">
                         <p style="font-size: 16px; color: #555; margin: 0; text-align: center;">
-                            Hi ! Thank you for registering to Jakarta Dental Exhibition (JADE) 2024!. <br> Here are your registration details:
+                            Hi! Thank you for registering to Jakarta Dental Exhibition (JADE) 2024! <br><br> Here are your registration details:
                         </p>
                     </td>
                 </tr>
@@ -83,7 +83,7 @@
                 <!-- Button -->
                 <tr>
                     <td align="center" style="padding: 20px;">
-                        <a href="#" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration: none; padding:
+                        <a href="{{ route('forms.detail', $handsOn->formId) }}" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration: none; padding:
                         12px 24px;
                         font-size:
                         16px;
