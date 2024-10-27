@@ -20,7 +20,7 @@ class ParticipantForm extends Component
     {
         $uuid = Str::orderedUuid();
         $qr = new DNS2D();
-        $qr = base64_decode($qr->getBarcodePNG(route('forms.detail', $uuid), 'QRCODE'));
+        $qr = base64_decode($qr->getBarcodePNG(route('forms.participant.detail', $uuid), 'QRCODE'));
         $path = 'img/forms/participant/' . $uuid . '.png';
         Storage::disk('public')->put($path, $qr);
         $participant = FormParticipant::create([

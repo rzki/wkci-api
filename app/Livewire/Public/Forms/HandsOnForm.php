@@ -75,7 +75,7 @@ class HandsOnForm extends Component
         $code = implode(', ', $selectedOptionCodes) ?? '';
         $uuid = Str::orderedUuid();
         $qr = new DNS2D();
-        $qr = base64_decode($qr->getBarcodePNG(route('forms.detail', $uuid), 'QRCODE'));
+        $qr = base64_decode($qr->getBarcodePNG(route('forms.hands-on.detail', $uuid), 'QRCODE'));
         $path = 'img/forms/hands-on/' . $uuid . '.png';
         Storage::disk('public')->put($path, $qr);
         $handsOn = Form::create([
