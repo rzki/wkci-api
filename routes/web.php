@@ -8,6 +8,7 @@ use App\Livewire\Forms\FormIndex;
 use App\Livewire\Forms\FormImport;
 use App\Livewire\Forms\Participants\FormParticipantIndex;
 use App\Livewire\Public\Forms\FormDetail;
+use App\Livewire\Public\Forms\ParticipantFormDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Products\ProductEdit;
@@ -23,7 +24,7 @@ Route::get('/email-template', function(){
     return view('emails.hands-on-registration');
 });
 Route::get('forms/hands-on/detail/{formId}', FormDetail::class)->name('forms.hands-on.detail');
-Route::get('forms/participant/detail/{formId}', FormDetail::class)->name('forms.participant.detail');
+Route::get('forms/participant/detail/{formId}', ParticipantFormDetail::class)->name('forms.participant.detail');
 
 Auth::routes();
 
