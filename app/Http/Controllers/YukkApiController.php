@@ -118,8 +118,8 @@ class YukkApiController extends Controller
         $resultCache = Cache::get('generateQrResult');
         $unique = random_int(12,12).round(microtime(true)*10000);
         $endpoint = "/1.0/qr/qr-mpm-query";
-        // $qr = new DNS2D();
-        // $qr = $qr->getBarcodeHTML($resultCache['qrContent'], 'QRCODE', 4, 4);
+         $qr = new DNS2D();
+         $qr = $qr->getBarcodeHTML($resultCache['qrContent'], 'QRCODE', 4, 4);
         $body = [
             'originalPartnerReferenceNo' => $resultCache['partnerReferenceNo'],
             'serviceCode' => '47',
@@ -143,8 +143,8 @@ class YukkApiController extends Controller
         if($queryResult['transactionStatusDesc'] == 'Paid'){
             return to_route('notify_payment');
         }else{
-            // return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
-            return $queryResult;
+             return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
+//            return $queryResult;
         }
         // return $queryResult;
     }
