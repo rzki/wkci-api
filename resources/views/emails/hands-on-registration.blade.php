@@ -15,7 +15,7 @@
                 <!-- Logo -->
                 <tr>
                     <td align="center" style="padding: 20px; padding-top: 2em;">
-                        <img src="{{ asset('storage/icons/logo_new.png') }}" alt="Company Logo" width="120" style="border: 0; display: block; margin: 0 auto;">
+                        <img src="{{ asset('images/icons/logo_new.png') }}" alt="Company Logo" width="120" style="border: 0; display: block; margin: 0 auto;">
                     </td>
                 </tr>
 
@@ -99,18 +99,8 @@
                         <table cellpadding="0" cellspacing="0" style="width: auto;">
                             <tr>
                                 <td style="padding: 0 10px;">
-                                    <a href="https://facebook.com" target="_blank" style="text-decoration: none;">
-                                        <img src="{{ asset('storage/icons/facebook-brands-solid.svg') }}" alt="Facebook" width="24" style="display: block;">
-                                    </a>
-                                </td>
-                                <td style="padding: 0 10px;">
-                                    <a href="https://twitter.com" target="_blank" style="text-decoration: none;">
-                                        <img src="{{ asset('storage/icons/x-twitter-brands-solid.svg') }}" alt="Twitter" width="24" style="display: block;">
-                                    </a>
-                                </td>
-                                <td style="padding: 0 10px;">
-                                    <a href="https://instagram.com" target="_blank" style="text-decoration: none;">
-                                        <img src="{{ asset('storage/icons/instagram-brands-solid.svg') }}" alt="Instagram" width="24" style="display: block;">
+                                    <a href="https://www.instagram.com/jktdental.id" target="_blank" style="text-decoration: none;">
+                                        <img src="{{ asset('images/icons/instagram-brands-solid.svg') }}" alt="Instagram" width="24" style="display: block;">
                                     </a>
                                 </td>
                             </tr>
