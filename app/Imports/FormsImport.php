@@ -30,11 +30,11 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     {
         $uuid = Str::orderedUuid();
         $qr = new DNS2D();
-        $qr = base64_decode($qr->getBarcodePNG(route('forms.detail', $uuid), 'QRCODE'));
-        $path = 'img/forms/' . $uuid . '.png';
+        $qr = base64_decode($qr->getBarcodePNG(route('forms.hands-on.detail', $uuid), 'QRCODE'));
+        $path = 'img/forms/hands-on/' . $uuid . '.png';
         Storage::disk('public')->put($path, $qr);
 
-        $form = Form::create([
+        Form::create([
             'formId' => $uuid,
             'name_str' => $row['name_str'],
             'full_name' => $row['full_name'],
@@ -47,7 +47,6 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'amount' => $row['amount'],
             'barcode' => $path,
         ]);
-        Log::info($form);
 //        dd($form);
 //        return $form;
     }
