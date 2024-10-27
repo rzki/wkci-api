@@ -50,7 +50,7 @@
                                                         <td>{{ $form->nik ?? '' }}</td>
                                                         <td>{{ $form->npa ?? '' }}</td>
                                                         <td>{{ $form->cabang_pdgi ?? '' }}</td>
-                                                        <td>{{ $form->no_telepon ?? '' }}</td>
+                                                        <td>{{ $form->phone_number ?? '' }}</td>
                                                         <td>{{ $form->attended ?? '' }}</td>
                                                         <td>{{ number_format($form->amount, 2, '.', ',') ?? '0' }}</td>
                                                         <td>
