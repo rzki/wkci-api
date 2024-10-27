@@ -22,7 +22,9 @@ Route::get('/', function () {
 Route::get('/email-template', function(){
     return view('emails.hands-on-registration');
 });
-Route::get('forms/detail/{formId}', FormDetail::class)->name('forms.detail');
+Route::get('forms/hands-on/detail/{formId}', FormDetail::class)->name('forms.hands-on.detail');
+Route::get('forms/participant/detail/{formId}', FormDetail::class)->name('forms.participant.detail');
+
 Auth::routes();
 
 Route::middleware('auth')->group(function () {

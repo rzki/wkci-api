@@ -3,7 +3,7 @@
         <div class="row min-vh-100">
             <div class="col d-flex justify-content-center align-items-center">
                 <div class="card p-5">
-                    <h2 class="fw-bold text-center">{{ __('Detail Peserta') }}</h2>
+                    <h2 class="fw-bold text-center">{{ __('Detail Peserta Hands-On') }}</h2>
                     <!-- /.fw-bold -->
                     <div class="card-body mb-0">
                         <div class="barcode-img text-center mb-5">

@@ -16,7 +16,7 @@ class FormDetail extends Component
         $this->forms = Form::where('formId', $formId)->first();
     }
     #[Layout('components.layouts.public')]
-    #[Title('Detail Peserta')]
+    #[Title('Detail Peserta Hands-On')]
     public function render()
     {
         return view('livewire.public.forms.form-detail',[
