@@ -5,7 +5,7 @@
                 <div class="col-12 px-0">
                     <div class="card border-0 shadow">
                         <div class="card-body">
-                            <h2 class="fs-5 fw-bold mb-3">{{ __('All Forms') }}</h2>
+                            <h2 class="fs-5 fw-bold mb-3">{{ __('Hands-On Forms') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
                                      <div class="row mb-3">
@@ -54,7 +54,7 @@
                                                         <td>{{ $form->attended ?? '' }}</td>
                                                         <td>{{ number_format($form->amount, 2, '.', ',') ?? '0' }}</td>
                                                         <td>
-                                                            <a href="{{ route('forms.detail', $form->formId) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                                                            <a href="{{ route('forms.hands-on.detail', $form->formId) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                                             <a href="{{ route('forms.edit', $form->formId) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
                                                             <button class="btn btn-danger"
                                                                     wire:click.prevent="deleteConfirm('{{ $form->formId }}')"><i
