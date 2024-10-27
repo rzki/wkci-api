@@ -81,7 +81,7 @@ class HandsOnForm extends Component
             'npa' => $this->npa,
             'cabang_pdgi' => $this->pdgi_cabang,
             'phone_number' => $this->no_telepon,
-            'seminar_type' => $seminar->name,
+            'seminar_type' => $seminar->name ?? '',
             'attend_to' => $code,
             'amount' => $this->totalAmount,
             'form_type' => 'seminar'
