@@ -56,6 +56,8 @@
                                                         <td>
                                                             <a href="{{ route('forms.hands-on.detail', $form->formId) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                                             <a href="{{ route('forms.edit', $form->formId) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                                            <button class="btn btn-success" wire:click.prevent="sendEmail('{{ $form->formId }}')"><i class="fas
+                                                            fa-envelope"></i></button>
                                                             <button class="btn btn-danger"
                                                                     wire:click.prevent="deleteConfirm('{{ $form->formId }}')"><i
                                                                     class="fas fa-trash"></i></button>

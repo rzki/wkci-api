@@ -50,6 +50,8 @@
                                                             <i class="fas fa-eye"></i>
                                                             <!-- /.fas -->
                                                         </a>
+                                                        <button class="btn btn-success" wire:click.prevent="sendEmail('{{ $form->formId }}')"><i class="fas
+                                                            fa-envelope"></i></button>
                                                         <button class="btn btn-danger"
                                                                 wire:click.prevent="deleteConfirm('{{ $form->formId }}')"><i
                                                                 class="fas fa-trash"></i></button>
@@ -90,7 +92,7 @@
     window.addEventListener('delete-confirmation', event => {
         Swal.fire({
             title: "Are you sure?",
-            text: "Product will be deleted permanently!",
+            text: "Form entry will be deleted permanently!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",

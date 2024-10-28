@@ -2,7 +2,11 @@
 
 namespace App\Livewire\Forms\Participants;
 
+use App\Mail\HandsOnRegistrationMail;
+use App\Mail\ParticipantFormMail;
+use App\Models\Form;
 use App\Models\FormParticipant;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
@@ -33,7 +37,23 @@ class FormParticipantIndex extends Component
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
-        return $this->redirectRoute('forms.index', navigate: true);
+        return $this->redirectRoute('forms.participant.index', navigate: true);
+    }
+    public function sendEmail($formId)
+    {
+        $this->formId = $formId;
+        $participant = FormParticipant::where('formId', $formId)->first();
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Email sent!',
+            'toast' => true,
+            'position' => 'top-end',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+        Mail::to($participant->email)->send(new ParticipantFormMail($participant));
+        return $this->redirectRoute('forms.participant.index', navigate: true);
     }
     #[Layout('components.layouts.app')]
     #[Title('Form Participants')]
