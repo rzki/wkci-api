@@ -7,8 +7,12 @@ use App\Livewire\Forms\FormEdit;
 use App\Livewire\Forms\FormIndex;
 use App\Livewire\Forms\FormImport;
 use App\Livewire\Forms\Participants\FormParticipantIndex;
+use App\Livewire\MyProfile;
 use App\Livewire\Public\Forms\FormDetail;
 use App\Livewire\Public\Forms\ParticipantFormDetail;
+use App\Livewire\Users\UserCreate;
+use App\Livewire\Users\UserEdit;
+use App\Livewire\Users\UserIndex;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Products\ProductEdit;
@@ -37,9 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::get('forms/edit/{formId}', FormEdit::class)->name('forms.edit');
     Route::get('forms/import', FormImport::class)->name('forms.import');
     Route::get('forms/participants', FormParticipantIndex::class)->name('forms.participant.index');
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('users', UserIndex::class)->name('users.index');
+    Route::get('users/create', UserCreate::class)->name('users.create');
+    Route::get('users/edit/{userId}', UserEdit::class)->name('users.edit');
+    Route::get('profile', MyProfile::class)->name('profile.show');
 });
 
 Route::get('/register/hands-on', HandsOnForm::class)->name('hands-on_form');
