@@ -23,7 +23,7 @@ use App\Livewire\Public\Forms\HandsOnForm;
 use App\Livewire\Public\Forms\ParticipantForm;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get('/email-template', function(){
     return view('emails.hands-on-registration');
