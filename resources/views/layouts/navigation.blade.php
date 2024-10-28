@@ -55,7 +55,7 @@
     </li>
 
     <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
-        <a href="{{ route('users.index') }}" class="nav-link">
+        <a href="{{ route('users.index') }}" class="nav-link" wire:navigate>
             <span class="sidebar-icon me-3">
                 <i class="fas fa-user-alt fa-fw"></i>
             </span>
