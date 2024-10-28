@@ -5,13 +5,13 @@
                 <div class="col-12 px-0">
                     <div class="card border-0 shadow">
                         <div class="card-body">
-                            <h2 class="fs-5 fw-bold py-3">{{ __('Import Data Forms') }}</h2>
+                            <h2 class="fs-5 fw-bold py-3">{{ __('Import Data Participant Forms') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
-                                     <div class="row mb-3">
+                                    <div class="row mb-3">
                                         <div class="col d-flex justify-content-start pb-3">
-                                            <a href="{{ route('forms.index') }}"
-                                                class="btn btn-primary ml-3 text-white" wire:navigate><i
+                                            <a href="{{ route('forms.participant.index') }}"
+                                               class="btn btn-primary ml-3 text-white" wire:navigate><i
                                                     class="fa fa-arrow-left" aria-hidden="true"></i>{{ __(' Back')
                                                 }}</a>
                                         </div>
@@ -25,7 +25,6 @@
                                                     <input type="file" name="forms" id="forms" class="form-control"
                                                            wire:model='forms' required>
                                                     <small class="text-muted">{{ __('Supported file: xlsx') }}</small>
-                                                </div>
                                                 <div class="upload mb-3 justify-content-center text-center" wire:loading wire:target='forms'>{{ __('Uploading...') }}</div>
                                                 <div class="d-grid">
                                                     <button type="submit" class="btn btn-success text-white">{{ __('Submit') }}</button>

@@ -26,7 +26,7 @@ class FormParticipantIndex extends Component
         $this->form->delete();
         session()->flash('alert', [
             'type' => 'success',
-            'title' => 'Form entry deleted successfully!',
+            'title' => 'Participant form entry deleted successfully!',
             'toast' => true,
             'position' => 'top-end',
             'timer' => 2500,

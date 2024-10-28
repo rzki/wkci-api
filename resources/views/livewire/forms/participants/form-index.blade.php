@@ -10,7 +10,7 @@
                                 <div class="container-fluid px-3">
                                      <div class="row mb-3">
                                         <div class="col d-flex justify-content-end pb-3">
-                                            <a href="{{ route('forms.import') }}"
+                                            <a href="{{ route('forms.participant.import') }}"
                                                 class="btn btn-success ml-3 text-white" wire:navigate><i
                                                     class="fas fa-upload" aria-hidden="true"></i>{{ __(' Import Data')
                                                 }}</a>
@@ -45,6 +45,15 @@
                                                     <td>{{ $form->email ?? '' }}</td>
                                                     <td>{{ $form->phone ?? '' }}</td>
                                                     <td>{{ $form->origin ?? '' }}</td>
+                                                    <td>
+                                                        <a href="{{ route('forms.participant.detail', $form->formId) }}" class="btn btn-primary">
+                                                            <i class="fas fa-eye"></i>
+                                                            <!-- /.fas -->
+                                                        </a>
+                                                        <button class="btn btn-danger"
+                                                                wire:click.prevent="deleteConfirm('{{ $form->formId }}')"><i
+                                                                class="fas fa-trash"></i></button>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             </tbody>

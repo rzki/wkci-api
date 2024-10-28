@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Milon\Barcode\DNS2D;
-
+HeadingRowFormatter::default('none');
 class FormsImport implements WithMultipleSheets
 {
     public function sheets(): array
@@ -23,7 +23,6 @@ class FormsImport implements WithMultipleSheets
     }
 }
 
-HeadingRowFormatter::default('none');
 class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
     public function model(array $row)
@@ -47,8 +46,6 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'amount' => $row['amount'],
             'barcode' => $path,
         ]);
-//        dd($form);
-//        return $form;
     }
 }
 
