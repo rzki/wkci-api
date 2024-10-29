@@ -16,6 +16,14 @@
                                                 }}</a>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <input wire:model.live.debounce.250ms='search' type="text" name="search"
+                                                   id="search" class="form-control mb-3 w-25" placeholder="Search...">
+                                        </div>
+                                        <div class="col-lg-6">
+                                        </div>
+                                    </div>
                                     <div class="table-wrapper table-responsive">
                                         <table class="table striped-table text-black text-center">
                                             <thead>
@@ -43,7 +51,7 @@
                                             @else
                                                 @foreach ($forms as $form)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $forms->firstItem() + $loop->index }}</td>
                                                         <td>{{ $form->name_str ?? '' }}</td>
                                                         <td>{{ $form->full_name ?? '' }}</td>
                                                         <td>{{ $form->email ?? '' }}</td>
