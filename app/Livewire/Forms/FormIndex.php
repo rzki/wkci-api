@@ -12,7 +12,7 @@ use Livewire\Attributes\Title;
 class FormIndex extends Component
 {
     use WithPagination;
-    public $perPage = 5;
+    public $perPage = 5, $search;
     public $form, $formId;
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
@@ -56,7 +56,7 @@ class FormIndex extends Component
     public function render()
     {
         return view('livewire.forms.form-index',[
-            'forms' => Form::orderByDesc('id')
+            'forms' => Form::search($this->search)->orderByDesc('id')
                         ->paginate($this->perPage)
         ]);
     }
