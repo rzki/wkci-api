@@ -29,7 +29,8 @@
                 <!-- Welcome Message -->
                 <tr>
                     <td>
-                        <img src="{{ asset('images/icons/circle-check-solid.png') }}" alt="" width="120" style="text-align: center">
+                        <img src="{{ asset('images/icons/circle-check-solid.png') }}" alt="" width="120" style="display:block; margin-left: auto; margin-right: auto; text-align:
+                         center">
                     </td>
                 </tr>
                 <tr>
