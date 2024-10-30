@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Form;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -43,8 +44,16 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'cabang_pdgi' => $row['cabang_pdgi'],
             'phone_number' => $row['phone_number'],
             'attended' => $row['attended'],
-            'amount' => $row['amount'],
+            'amount' => $row['amount'] ?? '0,00',
+            'trx_history' => $row['Bukti Transfer'],
             'barcode' => $path,
+        ]);
+        Transaction::create([
+            'transactionId' => Str::orderedUuid(),
+            'participant_name' => $row['full_name'],
+            'payment_status' => 'Paid',
+            'amount' => $row['amount'] ?? '',
+            'trx_proof' => $row['Bukti Transfer'],
         ]);
     }
 }

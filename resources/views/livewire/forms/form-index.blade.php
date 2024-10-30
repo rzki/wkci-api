@@ -60,7 +60,11 @@
                                                         <td>{{ $form->cabang_pdgi ?? '' }}</td>
                                                         <td>{{ $form->phone_number ?? '' }}</td>
                                                         <td>{{ $form->attended ?? '' }}</td>
-                                                        <td>{{ number_format($form->amount, 2, '.', ',') ?? '0' }}</td>
+                                                        @if($form->amount != null)
+                                                            <td>{{ "IDR ".number_format($form->amount, 2, '.', ',') }}</td>
+                                                        @else
+                                                            <td>{{ "IDR 0.00" }}</td>
+                                                        @endif
                                                         <td>
                                                             <a href="{{ route('forms.hands-on.detail', $form->formId) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                                             <a href="{{ route('forms.edit', $form->formId) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
