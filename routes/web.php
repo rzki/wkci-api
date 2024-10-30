@@ -11,6 +11,7 @@ use App\Livewire\Forms\Participants\FormParticipantIndex;
 use App\Livewire\MyProfile;
 use App\Livewire\Public\Forms\FormDetail;
 use App\Livewire\Public\Forms\ParticipantFormDetail;
+use App\Livewire\Transactions\TransactionIndex;
 use App\Livewire\Users\UserCreate;
 use App\Livewire\Users\UserEdit;
 use App\Livewire\Users\UserIndex;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('users/create', UserCreate::class)->name('users.create');
     Route::get('users/edit/{userId}', UserEdit::class)->name('users.edit');
     Route::get('profile', MyProfile::class)->name('profile.show');
+    Route::get('transactions', TransactionIndex::class)->name('transactions.index');
 });
 
 Route::get('/register/hands-on', HandsOnForm::class)->name('hands-on_form');
