@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('email');
             $table->string('nik');
             $table->string('npa');
-            $table->string('cabang_pdgi');
+            $table->string('cabang_pdgi')->nullable();
             $table->string('phone_number');
             $table->string('seminar')->nullable();
             $table->string('attended')->nullable();
             $table->string('amount')->nullable();
+            $table->string('trx_history')->nullable();
             $table->tinyText('barcode')->nullable();
-            $table->string('form_type');
             $table->timestamps();
         });
     }
