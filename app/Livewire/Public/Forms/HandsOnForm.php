@@ -5,7 +5,9 @@ namespace App\Livewire\Public\Forms;
 use App\Mail\HandsOnRegistrationMail;
 use App\Models\Form;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -63,16 +65,20 @@ class HandsOnForm extends Component
     public function submit(Request $request)
     {
         $seminar = $this->seminars->find($this->selectedSeminarId);
+        $selectedOptionCodes = [];
         foreach ($this->isHandsOnChecked as $optionId => $isSelected) {
             if ($isSelected) {
                 // Find the corresponding hands-on option by ID
                 $selectedOption = $this->handsOn->firstWhere('id', $optionId);
                 if ($selectedOption) {
                     $selectedOptionCodes[] = $selectedOption->code;
+                }else{
+                    $selectedOptionCodes[] = null;
                 }
             }
         }
         $code = implode(', ', $selectedOptionCodes) ?? '';
+
         $uuid = Str::orderedUuid();
         $qr = new DNS2D();
         $qr = base64_decode($qr->getBarcodePNG(route('forms.hands-on.detail', $uuid), 'QRCODE'));
@@ -88,10 +94,18 @@ class HandsOnForm extends Component
             'cabang_pdgi' => $this->pdgi_cabang,
             'phone_number' => $this->no_telepon,
             'seminar_type' => $seminar->name ?? '',
-            'attended' => $code,
+            'attended' => $code ?? '',
             'amount' => $this->totalAmount,
             'barcode' => $path,
         ]);
+        $trxForm = Transaction::create([
+            'transactionId' => Str::orderedUuid(),
+            'participant_name' => $this->name_ktp,
+            'phone_number' => $this->no_telepon,
+            'amount' => $this->totalAmount,
+        ]);
+        Cache::put('handsOnForm', $handsOn, now()->addSeconds(600));
+        Cache::put('trxDataForm', $trxForm, now()->addSeconds(600));
         Mail::to($this->email)->send(new HandsOnRegistrationMail($handsOn));
         return $this->redirectRoute('generate_qr', ['amount' => $this->totalAmount]);
     }

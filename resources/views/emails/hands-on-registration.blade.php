@@ -15,7 +15,7 @@
                 <!-- Logo -->
                 <tr>
                     <td align="center" style="padding: 20px; padding-top: 2em;">
-                        <img src="{{ asset('images/icons/logo_new.png') }}" alt="Company Logo" width="120" style="border: 0; display: block; margin: 0 auto;">
+                        <img src="{{ asset('images/icons/logo_new.png') }}" alt="Company Logo" width="150" style="border: 0; display: block; margin: 0 auto;">
                     </td>
                 </tr>
 
@@ -30,44 +30,9 @@
                 <tr>
                     <td style="padding: 10px 20px;">
                         <p style="font-size: 16px; color: #555; margin: 0; text-align: center;">
-                            Hi! Thank you for registering to Jakarta Dental Exhibition (JADE) 2024! <br><br> Here are your registration details:
+                            Hi! Thank you for registering to Jakarta Dental Exhibition (JADE) 2024! <br><br> You will receive your registration details after your payment is
+                            complete.
                         </p>
-                    </td>
-                </tr>
-
-                <!-- Data Table -->
-                <tr>
-                    <td style="padding: 20px;">
-                        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">Name</td>
-                                <td style="padding: 8px;">{{ $handsOn->full_name }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">Email</td>
-                                <td style="padding: 8px;">{{ $handsOn->email }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">NIK</td>
-                                <td style="padding: 8px;">{{ $handsOn->nik }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">NPA</td>
-                                <td style="padding: 8px;">{{ $handsOn->npa }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">PDGI Cabang</td>
-                                <td style="padding: 8px;">{{ $handsOn->cabang_pdgi ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">Phone Number</td>
-                                <td style="padding: 8px;">{{ $handsOn->phone_number }}</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">Seminar & HO</td>
-                                <td style="padding: 8px;">{{ $handsOn->attended }}</td>
-                            </tr>
-                        </table>
                     </td>
                 </tr>
 
@@ -75,23 +40,11 @@
                 <tr>
                     <td style="padding: 10px 20px;">
                         <p style="font-size: 16px; color: #555; margin: 0; text-align: center;">
-                            See you at the venue!
+                            Thank you!
                         </p>
                     </td>
                 </tr>
 
-                <!-- Button -->
-                <tr>
-                    <td align="center" style="padding: 20px;">
-                        <a href="{{ route('forms.hands-on.detail', $handsOn->formId) }}" target="_blank" style="background-color: #885694; color: #ffffff; text-decoration: none; padding:
-                        12px 24px;
-                        font-size:
-                        16px;
-                        border-radius: 5px; display: inline-block;">
-                            More details
-                        </a>
-                    </td>
-                </tr>
 
                 <!-- Social Media Links -->
                 <tr>
