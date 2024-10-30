@@ -15,7 +15,7 @@
                 <!-- Logo -->
                 <tr>
                     <td align="center" style="padding: 20px; padding-top: 2em;">
-                        <img src="{{ asset('images/icons/logo_new.png') }}" alt="Company Logo" width="120" style="border: 0; display: block; margin: 0 auto;">
+                        <img src="{{ asset('images/icons/logo_new.png') }}" alt="Company Logo" width="150" style="border: 0; display: block; margin: 0 auto;">
                     </td>
                 </tr>
 
