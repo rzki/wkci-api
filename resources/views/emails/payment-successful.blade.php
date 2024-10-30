@@ -30,7 +30,7 @@
                 <tr>
                     <td>
                         <img src="{{ asset('images/icons/circle-check-solid.png') }}" alt="" width="120" style="display:block; margin-left: auto; margin-right: auto; text-align:
-                         center; width: 50%; height: 50%">
+                         center; width: 15%; height: 15%">
                     </td>
                 </tr>
                 <tr>
