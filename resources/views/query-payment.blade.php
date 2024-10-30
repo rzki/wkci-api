@@ -10,6 +10,7 @@
                     <h2 class="fw-bold text-center">Payment Status</h2>
                     <hr style="border border-3 pb-3">
                     <div class="status-box mb-3 mx-3">
+                        <div class="text-center d-flex justify-content-center mb-3">{!! $qr !!}</div>
                         <h5 class="text-center">Reference No.</h5>
                         <h5 class="fw-bold text-center">{{ $queryResult['originalReferenceNo'] }}</h5>
                         <br>
