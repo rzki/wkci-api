@@ -244,6 +244,7 @@ class YukkApiController extends Controller
         {
             $body = [
                 'originalReferenceNo' => $queryResult['originalReferenceNo'],
+                'originalPartnerReferenceNo' => $queryResult['originalPartnerReferenceNo'],
                 'latestTransactionStatus' => $queryResult['latestTransactionStatus'],
                 'transactionStatusDesc' => 'Success',
                 'amount' => [
