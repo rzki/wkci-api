@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentPendingMail;
+use App\Mail\PaymentSuccessfulMail;
+use App\Models\Transaction;
 use DateTime;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Milon\Barcode\DNS2D;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -56,7 +61,13 @@ class YukkApiController extends Controller
         ];
 
         $response = Http::withHeaders($headers)->post($baseUrl.$endpoint, $body);
-        return $response->json();
+      return $response->json();
+//        return [
+//            request()->method().' '.$baseUrl.$endpoint,
+//            $headers,
+//            $body,
+//            $response->json(),
+//            ];
     }
 
     public function generateQR()
@@ -64,6 +75,8 @@ class YukkApiController extends Controller
         $generateToken = $this->generateAccessToken();
         $accessToken = $generateToken['accessToken'];
         $amount = request()->input('amount') ?? '1';
+        $formData = Cache::get('handsOnForm');
+        $trxFormData = Cache::get('trxDataForm');
         $this->generatePartnerReferenceNo();
         $requestBody = [
             'partnerReferenceNo' => Cache::get('partnerRefNo'),
@@ -82,18 +95,15 @@ class YukkApiController extends Controller
                 ]
             ]
         ];
-
         $minifiedRequestBody = json_encode($requestBody);
-
         $urlGenerateQR = $this->baseUrl."/1.0/qr/qr-mpm-generate";
-
         // HTTPMethod+”:“+ EndpointUrl +":"+ AccessToken+":“+ Lowercase(HexEncode(SHA256(minify(RequestBody))))+ ":“ +TimeStamp
         $stringToSign = "POST:"."/1.0/qr/qr-mpm-generate:".$accessToken.":".strtolower(hash("sha256", $minifiedRequestBody)).":".$this->generateTimestamp();
         $symmetricSignature = base64_encode(hash_hmac('sha512', $stringToSign, env('YUKK_CLIENT_SECRET'), true));
         $unique = random_int(12,12).round(microtime(true)*10000);
         $headers = [
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer '.$accessToken,
+            'Authorization' => 'Bearer '. $accessToken,
             'X-TIMESTAMP' => $this->generateTimestamp(),
             'X-SIGNATURE' => $symmetricSignature,
             'X-PARTNER-ID' => env('YUKK_CLIENT_ID'),
@@ -102,13 +112,20 @@ class YukkApiController extends Controller
         ];
         $sendRequestQR = Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
         $result = $sendRequestQR->json();
+        Transaction::where('transactionId', $trxFormData['transactionId'])->update([
+            'trx_ref_no' => $result['referenceNo'],
+            'partner_ref_no' => $result['partnerReferenceNo'],
+            'payment_status' => 'Pending',
+            'paid_at' => null,
+        ]);
         Cache::put('generateQrResult', $result, now()->addSeconds(900));
         $cachedResult = Cache::get('generateQrResult');
         $qr = new DNS2D();
-        $qr = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
+        $qrWeb = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
+        Mail::to($formData['email'])->send(new PaymentPendingMail($result, $formData));
         // Pass same variable to queryPayment function
-        return view('generated-qr', compact('result', 'qr'));
-        // return $cachedResult;
+        return view('generated-qr', compact('result', 'qrWeb'));
+//         return [ request()->method().' '.$urlGenerateQR, $headers, $requestBody, $cachedResult ];
     }
 
     public function queryPayment()
@@ -118,8 +135,11 @@ class YukkApiController extends Controller
         $resultCache = Cache::get('generateQrResult');
         $unique = random_int(12,12).round(microtime(true)*10000);
         $endpoint = "/1.0/qr/qr-mpm-query";
-         $qr = new DNS2D();
-         $qr = $qr->getBarcodeHTML($resultCache['qrContent'], 'QRCODE', 4, 4);
+        $form = Cache::get('handsOnForm');
+        $handsOn = Cache::get('trxDataForm');
+//        dd($trxFormData);
+        $qr = new DNS2D();
+        $qr = $qr->getBarcodeHTML($resultCache['qrContent'], 'QRCODE', 4, 4);
         $body = [
             'originalPartnerReferenceNo' => $resultCache['partnerReferenceNo'],
             'serviceCode' => '47',
@@ -140,13 +160,18 @@ class YukkApiController extends Controller
 
         $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
         $queryResult = $sendQueryPayment->json();
+
         if($queryResult['transactionStatusDesc'] == 'Paid'){
-            return to_route('notify_payment');
+                Cache::put('successPayment', $queryResult, now()->addSeconds(900));
+                Transaction::where('transactionId', $handsOn['transactionId'])->update([
+                    'payment_status' => $queryResult['transactionStatusDesc'],
+                    'paid_at' => $queryResult['paidTime'],
+                ]);
+                Mail::to($form['email'])->send(new PaymentSuccessfulMail($form, $resultCache));
+            return view('payment-successful', compact('queryResult', 'qr', 'resultCache'));
         }else{
-             return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
-//            return $queryResult;
+            return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
         }
-        // return $queryResult;
     }
     // YUKK hit API to JADE
     public function generateAccessTokenForYUKK()
@@ -214,21 +239,39 @@ class YukkApiController extends Controller
         $this->generateAccessTokenForYUKK();
         $accessToken = Cache::get('accessTokenYUKK');
         $timestamp = $this->generateTimestamp();
-        $queryResult = $this->queryPayment();
-        $body = [
-            'originalReferenceNo' => $queryResult['originalReferenceNo'],
-            'latestTransactionStatus' => $queryResult['latestTransactionStatus'],
-            'transactionStatusDesc' => $queryResult['transactionStatusDesc'],
-            'amount' => [
-                'value' => $queryResult['amount']['value'],
-                'currency' => 'IDR',
-            ],
-            'externalStoreID' => env('YUKK_STORE_ID'),
-            'additionalInfo' => [
-                'additionalField' => $queryResult['additionalInfo']['additionalField'],
-                'rrn' => '210430233071'
+        $queryResult = Cache::get('successPayment');
+        if ($queryResult['latestTransactionStatus'] = '00')
+        {
+            $body = [
+                'originalReferenceNo' => $queryResult['originalReferenceNo'],
+                'latestTransactionStatus' => $queryResult['latestTransactionStatus'],
+                'transactionStatusDesc' => 'Success',
+                'amount' => [
+                    'value' => $queryResult['amount']['value'],
+                    'currency' => 'IDR',
+                ],
+                'externalStoreID' => env('YUKK_STORE_ID'),
+                'additionalInfo' => [
+                    'additionalField' => $queryResult['additionalInfo']['additionalField'],
+                    'rrn' => '210430233071'
                 ]
             ];
+        }else{
+            $body = [
+                'originalReferenceNo' => $queryResult['originalReferenceNo'],
+                'latestTransactionStatus' => $queryResult['latestTransactionStatus'],
+                'transactionStatusDesc' => $queryResult['transactionStatusDesc'],
+                'amount' => [
+                    'value' => $queryResult['amount']['value'],
+                    'currency' => 'IDR',
+                ],
+                'externalStoreID' => env('YUKK_STORE_ID'),
+                'additionalInfo' => [
+                    'additionalField' => $queryResult['additionalInfo']['additionalField'],
+                    'rrn' => '210430233071'
+                ]
+            ];
+        }
             $minifyRequestBody = json_encode($body);
             $stringToSign = "POST:"."/1.0/qr/qr-mpm-notify:".$accessToken.":".strtolower(hash("sha256", $minifyRequestBody)).":".$this->generateTimestamp();
             $symmetricSignature = base64_encode(hash_hmac('sha512', $stringToSign, env('JADE_CLIENT_SECRET'), true));
@@ -274,7 +317,7 @@ class YukkApiController extends Controller
         }else{
             $response = response()->json([
                 'responseCode' => '2005200',
-                'responseMessage' => 'Request has been processed successfully'
+                'responseMessage' => 'Successful'
             ]);
 //            return [$headers, $body, $response];
             return $response;

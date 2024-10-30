@@ -53,7 +53,14 @@
             </ul>
         </div>
     </li>
-
+    <li class="nav-item {{ request()->routeIs('transactions.index') ? 'active' : '' }}">
+        <a href="{{ route('transactions.index') }}" class="nav-link" wire:navigate>
+            <span class="sidebar-icon me-3">
+                <i class="fas fa-rectangle-list"></i>
+            </span>
+            <span class="sidebar-text">{{ __('Transactions') }}</span>
+        </a>
+    </li>
     <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
         <a href="{{ route('users.index') }}" class="nav-link" wire:navigate>
             <span class="sidebar-icon me-3">
