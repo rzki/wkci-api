@@ -5,6 +5,8 @@ namespace App\Livewire\Users;
 use App\Mail\UserRegistrationMail;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -13,7 +15,14 @@ use Livewire\Component;
 
 class UserCreate extends Component
 {
+    use AuthorizesRequests;
     public $name, $email, $role;
+    public function mount()
+    {
+        if(!Auth::user()->hasRole(['Super Admin', 'Admin'])){
+            abort(403, 'Unauthorized');
+        }
+    }
     public function create()
     {
         $users = User::create([

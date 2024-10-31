@@ -3,17 +3,25 @@
 namespace App\Livewire\Users\Roles;
 
 use App\Models\Role;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class RoleIndex extends Component
 {
-    use WithPagination;
+    use WithPagination, AuthorizesRequests;
     public $roles, $roleId;
     public $search,
         $perPage = 5;
     public $listeners = ['deleteConfirmed' => 'delete'];
+    public function mount()
+    {
+        if(!Auth::user()->hasRole(['Super Admin'])){
+            abort(403, 'Unauthorized');
+        }
+    }
     public function deleteConfirm($roleId)
     {
         $this->roleId = $roleId;

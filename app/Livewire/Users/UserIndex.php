@@ -3,6 +3,8 @@
 namespace App\Livewire\Users;
 
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
@@ -10,11 +12,17 @@ use Illuminate\Support\Facades\Hash;
 
 class UserIndex extends Component
 {
-    use WithPagination;
+    use WithPagination, AuthorizesRequests;
     public $perPage = 5;
     public $user, $userId;
     public $listeners = ['deleteConfirmed' => 'delete'];
 
+    public function mount()
+    {
+        if(!Auth::user()->hasRole(['Super Admin', 'Admin'])){
+            abort(403, 'Unauthorized');
+        }
+    }
     public function deleteConfirm($userId)
     {
         $this->userId = $userId;

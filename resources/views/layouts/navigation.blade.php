@@ -45,7 +45,7 @@
         </div>
     </li>
 
-    @if(Auth::user()->hasRole(['Admin', 'Finance']))
+    @if(Auth::user()->hasRole(['Super Admin', 'Admin', 'Finance']))
         <li class="nav-item {{ request()->routeIs('transactions.index') ? 'active' : '' }}">
             <a href="{{ route('transactions.index') }}" class="nav-link" wire:navigate>
             <span class="sidebar-icon me-3">

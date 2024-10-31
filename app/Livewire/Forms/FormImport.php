@@ -3,6 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Imports\FormsImport;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -11,8 +13,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class FormImport extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, AuthorizesRequests;
     public $forms;
+    public function mount()
+    {
+        if(!Auth::user()->hasRole(['Finance'])){
+            abort(403, 'Unauthorized');
+        }
+    }
     public function import()
     {
         // Store file to temp folder
