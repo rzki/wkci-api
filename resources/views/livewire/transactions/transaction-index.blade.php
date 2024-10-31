@@ -94,10 +94,12 @@
                                                         <td>{{ $trx->trx_ref_no ?? '' }}</td>
                                                         <td>{{ $trx->partner_ref_no ?? '' }}</td>
                                                         <td>{{ $trx->participant_name }}</td>
-                                                        @if($trx->amount != null)
-                                                            <td>{{ "IDR ".number_format($trx->amount, 2, '.', ',') }}</td>
+                                                        @if($trx->amount == null)
+                                                            <td>{{ "IDR 0,00" }}</td>
+                                                        @elseif($trx->amount == '0,00')
+                                                            <td>{{ "IDR 0,00" }}</td>
                                                         @else
-                                                            <td>{{ "IDR 0.00" }}</td>
+                                                            <td>{{ "IDR ".number_format($trx->amount, 2, '.', ',') }}</td>
                                                         @endif
                                                         @if($trx->trx_proof != null)
                                                             <td>

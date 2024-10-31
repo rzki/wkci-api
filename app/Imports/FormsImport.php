@@ -56,7 +56,7 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'amount' => $row['amount'] ?? '0,00',
             'trx_history' => $row['Bukti Transfer'],
             'barcode' => $path,
-            'submitted_date' => $submitDate,
+            'submitted_date' => $submitDate ?? '',
         ]);
         Transaction::create([
             'transactionId' => Str::orderedUuid(),
@@ -65,7 +65,7 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'amount' => $row['amount'] ?? '',
             'paid_at' => $dateFormat.' '.$timeFormat ?? '',
             'trx_proof' => $row['Bukti Transfer'],
-            'submitted_date' => $submitDate,
+            'submitted_date' => $submitDate ?? '',
         ]);
     }
 }

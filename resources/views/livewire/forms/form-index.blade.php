@@ -110,10 +110,12 @@
                                                         <td>{{ $form->cabang_pdgi ?? '' }}</td>
                                                         <td>{{ $form->phone_number ?? '' }}</td>
                                                         <td>{{ $form->attended ?? '' }}</td>
-                                                        @if($form->amount != null)
-                                                            <td>{{ "IDR ".number_format($form->amount, 2, '.', ',') }}</td>
+                                                        @if($form->amount == null)
+                                                            <td>{{ "IDR 0,00" }}</td>
+                                                        @elseif($form->amount == '0,00')
+                                                            <td>{{ "IDR 0,00" }}</td>
                                                         @else
-                                                            <td>{{ "IDR 0.00" }}</td>
+                                                            <td>{{ "IDR ".number_format($form->amount, 2, '.', ',') }}</td>
                                                         @endif
                                                         @if($form->submitted_date != null)
                                                             <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) ?? '' }}</td>
