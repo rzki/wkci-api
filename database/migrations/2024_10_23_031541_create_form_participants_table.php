@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('formId');
             $table->string('full_name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone');
             $table->string('origin');
             $table->tinyText('barcode')->nullable();
