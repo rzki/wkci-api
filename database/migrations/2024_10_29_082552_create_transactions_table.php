@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('phone_number')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('paid_at')->nullable();
+            $table->tinyText('trx_proof')->nullable();
             $table->string('amount');
             $table->timestamps();
         });
