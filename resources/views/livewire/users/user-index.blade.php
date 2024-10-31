@@ -36,7 +36,7 @@
                                             @else
                                                 @foreach ($users as $user)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $users->firstItem() + $loop->index }}</td>
                                                         <td>{{ $user->name ?? '' }}</td>
                                                         <td>{{ $user->email ?? '' }}</td>
                                                         <td>

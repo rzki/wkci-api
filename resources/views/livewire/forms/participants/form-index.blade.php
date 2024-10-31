@@ -40,7 +40,7 @@
                                             @endif
                                             @foreach ($forms as $form)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $forms->firstItem() + $loop->index }}</td>
                                                     <td>{{ $form->full_name ?? '' }}</td>
                                                     <td>{{ $form->email ?? '' }}</td>
                                                     <td>{{ $form->phone ?? '' }}</td>

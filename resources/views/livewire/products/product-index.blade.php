@@ -34,7 +34,7 @@
                                             <tbody>
                                                 @foreach ($products as $product)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $products->firstItem() + $loop->index }}</td>
                                                         <td>{{ $product->code ?? '' }}</td>
                                                         <td>{{ $product->name ?? '' }}</td>
                                                         <td>{{ date('d/m/Y', strtotime($product->date)) }}</td>
