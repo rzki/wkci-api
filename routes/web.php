@@ -60,9 +60,6 @@ Route::middleware('auth')->group(function () {
     Route::get('roles', RoleIndex::class)->name('roles.index');
     Route::get('roles/create', RoleCreate::class)->name('roles.create');
     Route::get('roles/edit/{roleId}', RoleEdit::class)->name('roles.edit');
-    Route::get('permissions', PermissionIndex::class)->name('permissions.index');
-    Route::get('permissions/create', PermissionCreate::class)->name('permissions.create');
-    Route::get('permissions/edit/{permissionId}', PermissionEdit::class)->name('permissions.edit');
 });
 
 Route::get('/register/hands-on', HandsOnForm::class)->name('hands-on_form');
