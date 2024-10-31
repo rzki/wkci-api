@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\PaymentPendingMail;
 use App\Mail\PaymentSuccessfulMail;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use DateTime;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Mail;
@@ -160,12 +161,11 @@ class YukkApiController extends Controller
 
         $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
         $queryResult = $sendQueryPayment->json();
-
         if($queryResult['transactionStatusDesc'] == 'Paid'){
                 Cache::put('successPayment', $queryResult, now()->addSeconds(900));
                 Transaction::where('transactionId', $handsOn['transactionId'])->update([
                     'payment_status' => $queryResult['transactionStatusDesc'],
-                    'paid_at' => $queryResult['paidTime'],
+                    'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
                 ]);
                 Mail::to($form['email'])->send(new PaymentSuccessfulMail($form, $resultCache));
             return view('payment-successful', compact('queryResult', 'qr', 'resultCache'));

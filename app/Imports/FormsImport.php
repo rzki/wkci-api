@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Form;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -13,6 +14,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Milon\Barcode\DNS2D;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+
 HeadingRowFormatter::default('none');
 class FormsImport implements WithMultipleSheets
 {
@@ -32,6 +35,10 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $qr = new DNS2D();
         $qr = base64_decode($qr->getBarcodePNG(route('forms.hands-on.detail', $uuid), 'QRCODE'));
         $path = 'img/forms/hands-on/' . $uuid . '.png';
+        $date = Carbon::instance(Date::excelToDateTimeObject($row['TANGGAL']));
+        $dateFormat = $date->toDateString();
+        $time = Carbon::instance(Date::excelToDateTimeObject($row['WAKTU']));
+        $timeFormat = $time->toTimeString();
         Storage::disk('public')->put($path, $qr);
 
         Form::create([
@@ -53,6 +60,7 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'participant_name' => $row['full_name'],
             'payment_status' => 'Paid',
             'amount' => $row['amount'] ?? '',
+            'paid_at' => $dateFormat.' '.$timeFormat ?? '',
             'trx_proof' => $row['Bukti Transfer'],
         ]);
     }

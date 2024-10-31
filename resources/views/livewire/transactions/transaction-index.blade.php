@@ -66,7 +66,7 @@
                                                         @else
                                                             <td></td>
                                                         @endif
-                                                        <td>{{ $trx->paid_at ?? '' }}</td>
+                                                        <td>{{ date('d/m/Y H:i:s', strtotime($trx->paid_at)) ?? '' }}</td>
                                                         <td>{{ $trx->payment_status ?? '' }}</td>
                                                         <td>
                                                             <button class="btn btn-danger"

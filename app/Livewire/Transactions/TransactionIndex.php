@@ -5,9 +5,11 @@ namespace App\Livewire\Transactions;
 use App\Models\Transaction;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TransactionIndex extends Component
 {
+    use WithPagination;
     public $trx, $transactionId;
     public $perPage= 5, $search;
     protected $listeners = ['deleteConfirmed' => 'delete'];

@@ -36,9 +36,8 @@
                 <tr>
                     <td style="padding: 10px 20px;">
                         <p style="font-size: 16px; color: #555; margin: 0; text-align: center;">
-                            Hi! Thank you for completing payment #{{ $result['referenceNo'] }} to Seminar & Hands-On Jakarta Dental Exhibition <br> (JADE) 2024!.
-                            <br><br> Here are your
-                            registration details:
+                            Hi! Thank you for completing payment #{{ $result['referenceNo'] }} to Seminar & Hands-On Jakarta Dental Exhibition <br> (JADE) 2024!
+                            <br><br> Here are your registration details:
                         </p>
                     </td>
                 </tr>
