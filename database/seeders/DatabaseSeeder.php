@@ -15,15 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
-
-        $superadmin = User::create([
-            'userId' => Str::orderedUuid(),
-            'name' => 'Superadmin',
-            'email' => 'itd@kpopworld.id',
-            'password' => Hash::make('Superadmin2024!')
+        $this->call([
+            RoleSeeder::class,
+            UserSeeder::class,
         ]);
-
-        return $superadmin;
     }
 }

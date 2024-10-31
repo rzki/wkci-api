@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('amount')->nullable();
             $table->string('trx_history')->nullable();
             $table->tinyText('barcode')->nullable();
+            $table->timestamp('submitted_date')->useCurrent();
             $table->timestamps();
         });
     }

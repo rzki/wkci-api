@@ -35,6 +35,8 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $qr = new DNS2D();
         $qr = base64_decode($qr->getBarcodePNG(route('forms.hands-on.detail', $uuid), 'QRCODE'));
         $path = 'img/forms/hands-on/' . $uuid . '.png';
+        $timestampDate = Carbon::instance(Date::excelToDateTimeObject($row['Timestamp']));
+        $submitDate = $timestampDate->toDateTimeString();
         $date = Carbon::instance(Date::excelToDateTimeObject($row['TANGGAL']));
         $dateFormat = $date->toDateString();
         $time = Carbon::instance(Date::excelToDateTimeObject($row['WAKTU']));
@@ -54,6 +56,7 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'amount' => $row['amount'] ?? '0,00',
             'trx_history' => $row['Bukti Transfer'],
             'barcode' => $path,
+            'submitted_date' => $submitDate,
         ]);
         Transaction::create([
             'transactionId' => Str::orderedUuid(),
@@ -62,6 +65,7 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'amount' => $row['amount'] ?? '',
             'paid_at' => $dateFormat.' '.$timeFormat ?? '',
             'trx_proof' => $row['Bukti Transfer'],
+            'submitted_date' => $submitDate,
         ]);
     }
 }

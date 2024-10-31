@@ -12,6 +12,12 @@ use App\Livewire\MyProfile;
 use App\Livewire\Public\Forms\FormDetail;
 use App\Livewire\Public\Forms\ParticipantFormDetail;
 use App\Livewire\Transactions\TransactionIndex;
+use App\Livewire\Users\Permissions\PermissionCreate;
+use App\Livewire\Users\Permissions\PermissionEdit;
+use App\Livewire\Users\Permissions\PermissionIndex;
+use App\Livewire\Users\Roles\RoleCreate;
+use App\Livewire\Users\Roles\RoleEdit;
+use App\Livewire\Users\Roles\RoleIndex;
 use App\Livewire\Users\UserCreate;
 use App\Livewire\Users\UserEdit;
 use App\Livewire\Users\UserIndex;
@@ -51,6 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::get('users/edit/{userId}', UserEdit::class)->name('users.edit');
     Route::get('profile', MyProfile::class)->name('profile.show');
     Route::get('transactions', TransactionIndex::class)->name('transactions.index');
+    Route::get('roles', RoleIndex::class)->name('roles.index');
+    Route::get('roles/create', RoleCreate::class)->name('roles.create');
+    Route::get('roles/edit/{roleId}', RoleEdit::class)->name('roles.edit');
+    Route::get('permissions', PermissionIndex::class)->name('permissions.index');
+    Route::get('permissions/create', PermissionCreate::class)->name('permissions.create');
+    Route::get('permissions/edit/{permissionId}', PermissionEdit::class)->name('permissions.edit');
 });
 
 Route::get('/register/hands-on', HandsOnForm::class)->name('hands-on_form');

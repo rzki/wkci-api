@@ -27,6 +27,17 @@
                                                 <input type="email" name="email" id="email" class="form-control" wire:model='email'>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group mb-3">
+                                                <label for="role" class="form-label">{{ __('Roles') }}</label>
+                                                <select name="role" id="role" wire:model="role" class="form-control">
+                                                    <option value="">{{ __('Choose one...') }}</option>
+                                                    @foreach($roles as $role)
+                                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                         <!-- /.row -->
                                         <div class="d-grid">
                                             <button type="submit"

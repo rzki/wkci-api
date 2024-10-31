@@ -27,25 +27,25 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @if($user->isEmpty())
+                                            @if($users->isEmpty())
                                                 <tr>
                                                     <td colspan='12' class="text-center">
                                                         {{ __('Data not found') }}
                                                     </td>
                                                 </tr>
                                             @else
-                                                @foreach ($user as $u)
+                                                @foreach ($users as $user)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $u->name ?? '' }}</td>
-                                                        <td>{{ $u->email ?? '' }}</td>
+                                                        <td>{{ $user->name ?? '' }}</td>
+                                                        <td>{{ $user->email ?? '' }}</td>
                                                         <td>
-                                                            <a href="{{ route('users.edit', $u->userId) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
-                                                            <button class="btn btn-warning" wire:click.prevent="resetPassword('{{ $u->userId }}')"><i class="fas
+                                                            <a href="{{ route('users.edit', $user->userId) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                                            <button class="btn btn-warning" wire:click.prevent="resetPassword('{{ $user->userId }}')"><i class="fas
                                                             fa-rotate"></i></button>
                                                             <button class="btn btn-danger"
-                                                                    wire:click.prevent="deleteConfirm('{{ $u->userId }}')"><i
-                                                                    class="fas fa-trash"></i></button>
+                                                                    wire:click.prevent="deleteConfirm('{{ $user->userId }}')"><i
+                                                                    class="fas fa-trash"></i> </button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -66,7 +66,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                                                {{ $user->links() }}
+                                                {{ $users->links() }}
                                             </div>
                                         </div>
                                     </div>
@@ -95,11 +95,6 @@
                 $wire.dispatch('deleteConfirmed');
             }
         });
-    })
-</script>
-<script>
-    window.addEventListener('print-qr', event => {
-        $wire.dispatch('printThisQR');
     })
 </script>
 @endscript

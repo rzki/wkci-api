@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('paid_at')->nullable();
             $table->tinyText('trx_proof')->nullable();
             $table->string('amount');
+            $table->timestamp('submitted_date')->useCurrent();
             $table->timestamps();
         });
     }

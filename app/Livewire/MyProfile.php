@@ -40,7 +40,7 @@ class MyProfile extends Component
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
-        return $this->redirectRoute('profiles.show', navigate: true);
+        return $this->redirectRoute('profile.show', navigate: true);
     }
     #[Title('My Profile')]
     public function render()

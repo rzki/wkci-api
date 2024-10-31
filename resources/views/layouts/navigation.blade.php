@@ -16,15 +16,6 @@
         </a>
     </li>
 
-    <li class="nav-item {{ request()->routeIs('products.index') ? 'active' : '' }}" >
-        <a href="{{ route('products.index') }}" class="nav-link" wire:navigate>
-            <span class="sidebar-icon me-3">
-                <i class="fas fa-boxes"></i>
-            </span>
-            <span class="sidebar-text">{{ __('Products') }}</span>
-        </a>
-    </li>
-
     <li class="nav-item {{ request()->routeIs('forms.index') || request()->routeIs('forms.participant.index') ? 'active' : '' }}">
         <span class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
               data-bs-target="#forms">
@@ -53,23 +44,38 @@
             </ul>
         </div>
     </li>
-    <li class="nav-item {{ request()->routeIs('transactions.index') ? 'active' : '' }}">
-        <a href="{{ route('transactions.index') }}" class="nav-link" wire:navigate>
+
+    @if(Auth::user()->hasRole(['Admin', 'Finance']))
+        <li class="nav-item {{ request()->routeIs('transactions.index') ? 'active' : '' }}">
+            <a href="{{ route('transactions.index') }}" class="nav-link" wire:navigate>
             <span class="sidebar-icon me-3">
                 <i class="fas fa-rectangle-list"></i>
             </span>
-            <span class="sidebar-text">{{ __('Transactions') }}</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
-        <a href="{{ route('users.index') }}" class="nav-link" wire:navigate>
+                <span class="sidebar-text">{{ __('Transactions') }}</span>
+            </a>
+        </li>
+    @endif
+
+    @if(Auth::user()->hasRole(['Super Admin', 'Admin']))
+        <li class="nav-item {{ request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('users.edit') ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="nav-link" wire:navigate>
             <span class="sidebar-icon me-3">
                 <i class="fas fa-user-alt fa-fw"></i>
             </span>
-            <span class="sidebar-text">{{ __('Users') }}</span>
-        </a>
-    </li>
+                <span class="sidebar-text">{{ __('Users') }}</span>
+            </a>
+        </li>
+    @endif
 
-
+    @if(Auth::user()->hasRole('Super Admin'))
+        <li class="nav-item {{ request()->routeIs('roles.index') || request()->routeIs('roles.create') || request()->routeIs('roles.edit') ? 'active' : '' }}">
+            <a href="{{ route('roles.index') }}" class="nav-link" wire:navigate>
+            <span class="sidebar-icon me-3">
+                <i class="fas fa-user-gear fa-fw"></i>
+            </span>
+                <span class="sidebar-text">{{ __('Roles') }}</span>
+            </a>
+        </li>
+    @endif
 </ul>
 

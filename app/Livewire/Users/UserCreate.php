@@ -3,6 +3,7 @@
 namespace App\Livewire\Users;
 
 use App\Mail\UserRegistrationMail;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -12,7 +13,7 @@ use Livewire\Component;
 
 class UserCreate extends Component
 {
-    public $name, $email;
+    public $name, $email, $role;
     public function create()
     {
         $users = User::create([
@@ -21,6 +22,7 @@ class UserCreate extends Component
             'email' => $this->email,
             'password' => Hash::make('Jade2024!')
         ]);
+        $users->assignRole($this->role);
         session()->flash('alert', [
             'type' => 'success',
             'title' => 'User Registration Successful!',
@@ -36,6 +38,8 @@ class UserCreate extends Component
     #[Title('Create New User')]
     public function render()
     {
-        return view('livewire.users.user-create');
+        return view('livewire.users.user-create',[
+            'roles' => Role::where('name', '!=', 'Super Admin')->get()
+        ]);
     }
 }
