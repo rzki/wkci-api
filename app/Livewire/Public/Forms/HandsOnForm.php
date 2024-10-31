@@ -6,6 +6,7 @@ use App\Mail\HandsOnRegistrationMail;
 use App\Models\Form;
 use App\Models\Product;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
@@ -97,12 +98,14 @@ class HandsOnForm extends Component
             'attended' => $code ?? '',
             'amount' => $this->totalAmount,
             'barcode' => $path,
+            'submitted_date' => Carbon::now()
         ]);
         $trxForm = Transaction::create([
             'transactionId' => Str::orderedUuid(),
             'participant_name' => $this->name_ktp,
             'phone_number' => $this->no_telepon,
             'amount' => $this->totalAmount,
+            'submitted_date' => Carbon::now()
         ]);
         Cache::put('handsOnForm', $handsOn, now()->addSeconds(600));
         Cache::put('trxDataForm', $trxForm, now()->addSeconds(600));

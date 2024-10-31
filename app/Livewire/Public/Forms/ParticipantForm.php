@@ -5,6 +5,7 @@ namespace App\Livewire\Public\Forms;
 use App\Mail\HandsOnRegistrationMail;
 use App\Mail\ParticipantFormMail;
 use App\Models\FormParticipant;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -30,6 +31,7 @@ class ParticipantForm extends Component
             'phone' => $this->no_telepon,
             'origin' => $this->origin,
             'barcode' => $path,
+            'submitted_date' => Carbon::now()
         ]);
         session()->flash('alert', [
             'type' => 'success',
