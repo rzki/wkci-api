@@ -34,7 +34,7 @@ Route::middleware('guest')->group(function () {
 Route::get('/email-template', function(){
     return view('emails.hands-on-registration');
 });
-Route::get('forms/hands-on/detail/{formId}', FormDetail::class)->name('forms.hands-on.detail');
+Route::get('forms/seminar-hands-on/detail/{formId}', FormDetail::class)->name('forms.hands-on.detail');
 Route::get('forms/participant/detail/{formId}', ParticipantFormDetail::class)->name('forms.participant.detail');
 
 Auth::routes();
@@ -59,5 +59,5 @@ Route::middleware('auth')->group(function () {
     Route::get('roles/edit/{roleId}', RoleEdit::class)->name('roles.edit');
 });
 
-Route::get('/register/hands-on', HandsOnForm::class)->name('hands-on_form');
+Route::get('/register/seminar-hands-on', HandsOnForm::class)->name('hands-on_form');
 Route::get('/register/participant', ParticipantForm::class)->name('participant_form');
