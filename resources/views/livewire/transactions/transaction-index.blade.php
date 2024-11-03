@@ -63,12 +63,17 @@
                                     <div class="row export">
                                         <div class="col">
                                             <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
+                                            <button wire:click="deleteSelected" class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Delete Selected Data')
+                                            }}</button>
                                         </div>
                                     </div>
                                     <div class="table-wrapper table-responsive">
                                         <table class="table striped-table text-black text-center">
                                             <thead>
                                             <tr>
+                                                <th>
+{{--                                                    <input type="checkbox" name="selectAll" id="selectAll" wire:model="selectAll">--}}
+                                                </th>
                                                 <th style="width: 2em;">No</th>
                                                 <th>{{ __('Ref. No') }}</th>
                                                 <th>{{ __('Partner Ref. No') }}</th>
@@ -83,13 +88,15 @@
                                             <tbody>
                                             @if($transactions->isEmpty())
                                                 <tr>
-                                                    <td colspan='12' class="text-center">
+                                                    <td colspan='13' class="text-center">
                                                         {{ __('Data not found') }}
                                                     </td>
                                                 </tr>
                                             @else
                                                 @foreach ($transactions as $trx)
                                                     <tr>
+                                                        <td><input type="checkbox" name="selectedItems" id="selectedItems" wire:key="{{ $trx->id }}" value="{{
+                                                        $trx->id }}" wire:model.live="selectedItems"></td>
                                                         <td>{{ $transactions->firstItem() + $loop->index }}</td>
                                                         <td>{{ $trx->trx_ref_no ?? '' }}</td>
                                                         <td>{{ $trx->partner_ref_no ?? '' }}</td>
@@ -104,7 +111,7 @@
                                                         @if($trx->trx_proof != null)
                                                             <td>
                                                                 <a href="{{ $trx->trx_proof }}" target="_blank" class="text-decoration-underline text-info"><i class="fas
-                                                        fa-up-right-from-square"></i> {{ __('Lihat Bukti Transfer')}}</a>
+                                                        fa-up-right-from-square"></i> {{ __(' Lihat Bukti Transfer')}}</a>
                                                             </td>
                                                         @else
                                                             <td></td>
@@ -112,9 +119,12 @@
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($trx->paid_at)) ?? '' }}</td>
                                                         <td>{{ $trx->payment_status ?? '' }}</td>
                                                         <td>
+                                                            <button class="btn btn-info"
+                                                                    wire:click.prevent="updatePaymentStatus('{{ $trx->transactionId }}')"><i
+                                                                    class="fas fa-rotate-right" title="Update Payment"></i></button>
                                                             <button class="btn btn-danger"
                                                                     wire:click.prevent="deleteConfirm('{{ $trx->transactionId }}')"><i
-                                                                    class="fas fa-trash"></i></button>
+                                                                    class="fas fa-trash" title="Delete Entry"></i></button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
