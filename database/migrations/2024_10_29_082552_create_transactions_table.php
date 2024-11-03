@@ -12,11 +12,12 @@ return new class extends Migration {
             $table->uuid('transactionId')->nullable();
             $table->string('trx_ref_no')->nullable();
             $table->string('partner_ref_no')->nullable();
+            $table->text('qrCode')->nullable();
             $table->string('participant_name')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('payment_status')->nullable();
-            $table->string('paid_at')->nullable();
-            $table->tinyText('trx_proof')->nullable();
+            $table->dateTime('paid_at')->nullable();
+            $table->text('trx_proof')->nullable();
             $table->string('amount');
             $table->timestamp('submitted_date')->useCurrent();
             $table->timestamps();

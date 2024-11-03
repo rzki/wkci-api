@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('origin');
-            $table->tinyText('barcode')->nullable();
+            $table->text('barcode')->nullable();
             $table->timestamp('submitted_date')->useCurrent();
             $table->timestamps();
         });

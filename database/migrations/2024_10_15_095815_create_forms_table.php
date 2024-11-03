@@ -25,7 +25,10 @@ return new class extends Migration
             $table->string('attended')->nullable();
             $table->string('amount')->nullable();
             $table->string('trx_history')->nullable();
-            $table->tinyText('barcode')->nullable();
+            $table->text('barcode')->nullable();
+            $table->string('trx_no')->nullable();
+            $table->dateTime('paid_at')->nullable();
+            $table->string('status')->nullable();
             $table->timestamp('submitted_date')->useCurrent();
             $table->timestamps();
         });
