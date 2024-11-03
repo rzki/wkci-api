@@ -40,10 +40,10 @@ class ParticipantsImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $submitDate = $timestampDate->toDateTimeString();
         FormParticipant::create([
             'formId' => $uuid,
-            'full_name' => $row['Nama'],
-            'email' => $row['Email'],
-            'phone' => $row['Telepon'],
-            'origin' => $row['Asal'],
+            'full_name' => $row['Nama Lengkap'],
+            'email' => $row['Email Aktif'],
+            'phone' => $row['Nomor Telepon'],
+            'origin' => $row['Asal Institusi/Perusahaan/Klinik'],
             'barcode' => $path,
             'submit_date' => $submitDate,
         ]);
