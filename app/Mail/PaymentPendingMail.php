@@ -25,7 +25,7 @@ class PaymentPendingMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Pending #'.$this->result['referenceNo'],
+            subject: 'Payment Pending [#'.$this->result['referenceNo'].']',
         );
     }
 

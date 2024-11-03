@@ -36,7 +36,7 @@
                 <tr>
                     <td style="padding: 10px 20px;">
                         <p style="font-size: 16px; color: #555; margin: 0; text-align: center;">
-                            Hi! Thank you for completing payment #{{ $result['referenceNo'] }} to Seminar & Hands-On Jakarta Dental Exhibition <br> (JADE) 2024!
+                            Hi! Thank you for completing payment #{{ $result['referenceNo'] ?? $refNo }} to Seminar & Hands-On Jakarta Dental Exhibition <br> (JADE) 2024!
                             <br><br> Here are your registration details:
                         </p>
                     </td>
@@ -48,7 +48,7 @@
                         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Reference No.</td>
-                                <td style="padding: 8px;">#{{ $result['referenceNo'] }}</td>
+                                <td style="padding: 8px;">#{{ $result['referenceNo'] ?? $refNo }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Amount</td>

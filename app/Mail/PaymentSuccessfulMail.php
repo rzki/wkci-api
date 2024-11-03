@@ -11,17 +11,18 @@ use Illuminate\Queue\SerializesModels;
 class PaymentSuccessfulMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $handsOn, $result;
-    public function __construct($form, $resultCache)
+    public $handsOn, $result, $refNo;
+    public function __construct($form, $resultCache, $refNo)
     {
         $this->handsOn = $form;
         $this->result = $resultCache;
+        $this->refNo = $refNo;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment Successful #'.$this->result['referenceNo'],
+            subject: 'Payment Successful [#'.$this->result['referenceNo'] ?? $this->refNo.']',
         );
     }
 
