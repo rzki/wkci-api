@@ -16,10 +16,72 @@
                                                 }}</a>
                                         </div>
                                     </div>
+                                    <div class="row filter">
+                                        <div class="col">
+                                            <div class="d-flex mb-3">
+                                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#filterDropdown" aria-expanded="false"
+                                                        aria-controls="filterDropdown">
+                                                    {{ __('Date Filter') }}
+                                                </button>
+                                            </div>
+                                            <div class="collapse" id="filterDropdown">
+                                                <div class="card card-body border-0">
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            {{-- <form wire:submit='dateFilter' method="get"> --}}
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <p class="text-center mb-1">{{ __('Start') }}</p>
+                                                                    <input type="date" name="start-date"
+                                                                           id="start-date" class="form-control"
+                                                                           wire:model='start_date'>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <p class="text-center mb-1">{{ __('End') }}</p>
+                                                                    <input type="date" name="end-date"
+                                                                           id="end-date" class="form-control"
+                                                                           wire:model.live.debounce.500ms='end_date'>
+                                                                </div>
+                                                            </div>
+                                                            {{-- <div class="row mt-3">
+                                                                <button type="submit" class="btn btn-success text-white">Submit</button>
+                                                            </div> --}}
+                                                            {{-- </form> --}}
+                                                        </div>
+                                                        <div class="col-lg-4">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row search">
+                                        <div class="col-lg-6">
+                                            <input wire:model.live.debounce.250ms='search' type="text" name="search"
+                                                   id="search" class="form-control mb-3 w-25" placeholder="Search...">
+                                        </div>
+                                        <div class="col-lg-6">
+                                        </div>
+                                    </div>
+                                    <div class="row export">
+                                        <div class="col">
+                                            <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
+                                            <button wire:click="deleteSelected" class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Delete Selected Data')
+                                            }}</button>
+                                        </div>
+                                    </div>
                                     <div class="table-wrapper table-responsive">
                                         <table class="table striped-table text-black text-center">
                                             <thead>
                                             <tr>
+                                                <th>
+
+                                                </th>
                                                 <th style="width: 2em;">No</th>
                                                 <th>{{ __('Full Name') }}</th>
                                                 <th>{{ __('Email') }}</th>
@@ -31,7 +93,7 @@
                                             <tbody>
                                             @if($forms->isEmpty())
                                                 <tr>
-                                                    <td colspan='6' class="text-center">
+                                                    <td colspan='7' class="text-center">
                                                         {{ __('Data not found') }}
                                                     </td>
                                                 </tr>
@@ -40,6 +102,7 @@
                                             @endif
                                             @foreach ($forms as $form)
                                                 <tr>
+                                                    <td><input type="checkbox" name="selectedItems" id="selectedItems" wire:model.live="selectedItems" value="{{$form->id}}"></td>
                                                     <td>{{ $forms->firstItem() + $loop->index }}</td>
                                                     <td>{{ $form->full_name ?? '' }}</td>
                                                     <td>{{ $form->email ?? '' }}</td>
