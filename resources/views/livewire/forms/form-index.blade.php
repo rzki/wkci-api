@@ -71,12 +71,17 @@
                                     <div class="row export">
                                         <div class="col">
                                             <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
+                                            <button wire:click="deleteSelected" class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Delete Selected Data')
+                                            }}</button>
                                         </div>
                                     </div>
                                     <div class="table-wrapper table-responsive">
                                         <table class="table striped-table text-black text-center">
                                             <thead>
                                                 <tr>
+                                                    <th>
+
+                                                    </th>
                                                     <th style="width: 2em;">No</th>
                                                     <th>{{ __('Nama (STR)') }}</th>
                                                     <th>{{ __('Nama (KTP)') }}</th>
@@ -87,6 +92,9 @@
                                                     <th>{{ __('No Telepon') }}</th>
                                                     <th>{{ __('Hands-On') }}</th>
                                                     <th>{{ __('Total') }}</th>
+                                                    <th>{{ __('Paid At') }}</th>
+                                                    <th>{{ __('Payment Status') }}</th>
+                                                    <th>{{ __('Bukti Transfer') }}</th>
                                                     <th>{{ __('Submit Date') }}</th>
                                                     <th style="width: 5em;">{{ __('Action') }}</th>
                                                 </tr>
@@ -94,13 +102,14 @@
                                             <tbody>
                                             @if($forms->isEmpty())
                                                 <tr>
-                                                    <td colspan='12' class="text-center">
+                                                    <td colspan='13' class="text-center">
                                                         {{ __('Data not found') }}
                                                     </td>
                                                 </tr>
                                             @else
                                                 @foreach ($forms as $form)
                                                     <tr>
+                                                        <td><input type="checkbox" name="selectedItems" id="selectedItems" wire:model.live="selectedItems" value="{{$form->id}}"></td>
                                                         <td>{{ $forms->firstItem() + $loop->index }}</td>
                                                         <td>{{ $form->name_str ?? '' }}</td>
                                                         <td>{{ $form->full_name ?? '' }}</td>
@@ -116,6 +125,16 @@
                                                             <td>{{ "IDR 0,00" }}</td>
                                                         @else
                                                             <td>{{ "IDR ".number_format($form->amount, 2, '.', ',') }}</td>
+                                                        @endif
+                                                        <td>{{ date('d/m/Y H:i:s', strtotime($form->paid_at)) ?? '-' }}</td>
+                                                        <td>{{ $form->status ?? '' }}</td>
+                                                        @if($form->trx_history != null)
+                                                            <td>
+                                                                <a href="{{ $form->trx_history ?? '#' }}" target="_blank"  class="text-decoration-underline text-info"><i class="fas
+                                                        fa-up-right-from-square"></i>{{ __(' Lihat Bukti Transfer') }}</a>
+                                                            </td>
+                                                        @else
+                                                            <td>-</td>
                                                         @endif
                                                         @if($form->submitted_date != null)
                                                             <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) ?? '' }}</td>

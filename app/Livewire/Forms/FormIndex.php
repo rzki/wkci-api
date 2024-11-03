@@ -5,8 +5,10 @@ namespace App\Livewire\Forms;
 use App\Exports\HandsOnFormExport;
 use App\Mail\HandsOnRegistrationMail;
 use App\Models\Form;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
@@ -17,8 +19,31 @@ class FormIndex extends Component
     use WithPagination;
     public $perPage = 5, $search;
     public $form, $formId, $start_date = '', $end_date = '';
+    public $formCollection, $selectedItems = [];
     protected $listeners = ['deleteConfirmed' => 'delete'];
-
+    public function deleteSelected()
+    {
+        // Get selected items data
+        $itemsToDelete = Form::whereIn('id', $this->selectedItems)->get();
+        foreach ($itemsToDelete as $item)
+        {
+            Storage::disk('public')->delete($item->barcode);
+        }
+        // Delete the selected items
+        Form::whereIn('id', $this->selectedItems)->delete();
+        // Reset selected items and reload the items
+        $this->selectedItems = [];
+        session()->flash('alert',  [
+            'type' => 'success',
+            'title' => 'Selected form entries deleted successfully!',
+            'toast' => true,
+            'position' => 'top-right',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+        return $this->redirectRoute('forms.index', navigate: true);
+    }
     public function deleteConfirm($formId)
     {
         $this->formId = $formId;

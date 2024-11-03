@@ -12,7 +12,7 @@ class FormEdit extends Component
     use AuthorizesRequests;
     public function mount()
     {
-        if(!Auth::user()->hasRole(['Finance'])) {
+        if(!Auth::user()->hasRole(['Super Admin','Admin','Finance'])) {
             abort(403, 'Unauthorized');
         }
     }
