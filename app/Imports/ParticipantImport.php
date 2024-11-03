@@ -21,7 +21,7 @@ class ParticipantImport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            'Pameran' => new ParticipantsImport()
+            'Pameran JADE 2024' => new ParticipantsImport()
         ];
     }
 }
