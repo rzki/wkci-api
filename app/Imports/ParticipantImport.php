@@ -45,7 +45,7 @@ class ParticipantsImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'phone' => $row['Nomor Telepon'],
             'origin' => $row['Asal Institusi/Perusahaan/Klinik'],
             'barcode' => $path,
-            'submit_date' => $submitDate,
+            'submitted_date' => $submitDate,
         ]);
     }
 }
