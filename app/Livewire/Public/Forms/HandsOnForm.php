@@ -95,7 +95,7 @@ class HandsOnForm extends Component
             'cabang_pdgi' => $this->pdgi_cabang,
             'phone_number' => $this->no_telepon,
             'seminar_type' => $seminar->name ?? '',
-            'attended' => $code ?? '',
+            'attended' => $seminar->name.', ',$code ?? '',
             'amount' => $this->totalAmount,
             'barcode' => $path,
             'submitted_date' => Carbon::now()
@@ -107,8 +107,8 @@ class HandsOnForm extends Component
             'amount' => $this->totalAmount,
             'submitted_date' => Carbon::now()
         ]);
-        Cache::put('handsOnForm', $handsOn, now()->addSeconds(600));
-        Cache::put('trxDataForm', $trxForm, now()->addSeconds(600));
+        Cache::put('handsOnForm', $handsOn);
+        Cache::put('trxDataForm', $trxForm);
         Mail::to($this->email)->send(new HandsOnRegistrationMail($handsOn));
         return $this->redirectRoute('generate_qr', ['amount' => $this->totalAmount]);
     }
