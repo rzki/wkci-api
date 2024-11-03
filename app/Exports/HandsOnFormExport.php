@@ -6,11 +6,17 @@ use App\Models\Form;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class HandsOnFormExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
+class HandsOnFormExport extends DefaultValueBinder implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithCustomValueBinder
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -44,12 +50,30 @@ class HandsOnFormExport implements FromCollection, WithHeadings, WithMapping, Sh
             $handsOn->npa ?? '',
             $handsOn->cabang_pdgi ?? '',
             $handsOn->phone_number ?? '',
-            $handsOn->seminar ?? '',
             $handsOn->attended ?? '',
             $handsOn->amount ?? '',
             $handsOn->trx_history ?? '',
             $handsOn->submitted_date ?? '',
+            $handsOn->paid_at ?? '',
+            $handsOn->status ?? ''
         ];
+    }
+    public function columnFormats(): array
+    {
+        return [
+            'D' => NumberFormat::FORMAT_TEXT,
+        ];
+    }
+    public function bindValue(Cell $cell, $value)
+    {
+        if (is_numeric($value)) {
+            $cell->setValueExplicit($value, DataType::TYPE_STRING);
+
+            return true;
+        }
+
+        // else return default behavior
+        return parent::bindValue($cell, $value);
     }
 
     public function headings(): array
@@ -62,11 +86,12 @@ class HandsOnFormExport implements FromCollection, WithHeadings, WithMapping, Sh
             'NPA',
             'Cabang PDGI',
             'No. Telepon',
-            'Seminar',
-            'Hands On',
+            'Seminar & Hands On',
             'Total Pembayaran',
             'Bukti Pembayaran',
-            'Tanggal Submit'
+            'Tanggal Submit',
+            'Tanggal Pembayaran',
+            'Status Pembayaran'
         ];
     }
     public function styles($sheet)
