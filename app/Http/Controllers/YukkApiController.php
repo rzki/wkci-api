@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Mail\PaymentPendingMail;
 use App\Mail\PaymentSuccessfulMail;
+use App\Models\Form;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use DateTime;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Milon\Barcode\DNS2D;
@@ -113,13 +115,19 @@ class YukkApiController extends Controller
         ];
         $sendRequestQR = Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
         $result = $sendRequestQR->json();
+        Form::where('formId', $formData['formId'])->update([
+            'trx_no' => $result['referenceNo'],
+            'status' => 'Pending',
+            'paid_at' => null
+        ]);
         Transaction::where('transactionId', $trxFormData['transactionId'])->update([
             'trx_ref_no' => $result['referenceNo'],
             'partner_ref_no' => $result['partnerReferenceNo'],
+            'qrCode' => $result['qrContent'],
             'payment_status' => 'Pending',
             'paid_at' => null,
         ]);
-        Cache::put('generateQrResult', $result, now()->addSeconds(900));
+        Cache::put('generateQrResult', $result);
         $cachedResult = Cache::get('generateQrResult');
         $qr = new DNS2D();
         $qrWeb = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
@@ -138,11 +146,18 @@ class YukkApiController extends Controller
         $endpoint = "/1.0/qr/qr-mpm-query";
         $form = Cache::get('handsOnForm');
         $handsOn = Cache::get('trxDataForm');
-//        dd($trxFormData);
-        $qr = new DNS2D();
-        $qr = $qr->getBarcodeHTML($resultCache['qrContent'], 'QRCODE', 4, 4);
+
+        $trxId = base64_decode(request()->input('transactionId'));
+        $partnerRef = base64_decode(request()->input('trx'));
+        $qrCode = base64_decode(request()->input('qrCode'));
+        $refNo = base64_decode(request()->input('refNo'));
+        if($resultCache['qrContent'] ?? $qrCode)
+        {
+            $qr = new DNS2D();
+            $qr = $qr->getBarcodeHTML($resultCache['qrContent'] ?? $qrCode, 'QRCODE', 4, 4);
+        }
         $body = [
-            'originalPartnerReferenceNo' => $resultCache['partnerReferenceNo'],
+            'originalPartnerReferenceNo' => $resultCache['partnerReferenceNo'] ?? $partnerRef,
             'serviceCode' => '47',
             'externalStoreID' => env('YUKK_STORE_ID')
         ];
@@ -162,16 +177,68 @@ class YukkApiController extends Controller
         $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
         $queryResult = $sendQueryPayment->json();
         if($queryResult['transactionStatusDesc'] == 'Paid'){
-                Cache::put('successPayment', $queryResult, now()->addSeconds(900));
-                Transaction::where('transactionId', $handsOn['transactionId'])->update([
+                Cache::put('successPayment', $queryResult);
+                Form::where('formId', $form['formId'])->update([
+                    'status' => $queryResult['transactionStatusDesc'],
+                    'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
+                ]);
+                Transaction::where('transactionId', $handsOn['transactionId'] ?? $trxId)->update([
                     'payment_status' => $queryResult['transactionStatusDesc'],
                     'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
                 ]);
-                Mail::to($form['email'])->send(new PaymentSuccessfulMail($form, $resultCache));
-            return view('payment-successful', compact('queryResult', 'qr', 'resultCache'));
+                Mail::to($form['email'])->send(new PaymentSuccessfulMail($form, $resultCache, $refNo));
+                Cache::forget('handsOnForm');
+                Cache::forget('trxDataForm');
+                Cache::forget('generateQrResult');
+            return view('payment-successful', compact('queryResult'));
         }else{
             return view('query-payment', compact('queryResult', 'qr', 'resultCache'));
         }
+    }
+    public function queryPaymentStatus()
+    {
+        $generateAccessToken = $this->generateAccessToken();
+        $accessToken = $generateAccessToken['accessToken'];
+        $unique = random_int(12,12).round(microtime(true)*10000);
+        $endpoint = "/1.0/qr/qr-mpm-query";
+
+        $trxId = base64_decode(request()->input('transactionId'));
+        $partnerRef = base64_decode(request()->input('trx'));
+//        dd($partnerRef);
+        $body = [
+            'originalPartnerReferenceNo' => $partnerRef,
+            'serviceCode' => '47',
+            'externalStoreID' => env('YUKK_STORE_ID')
+        ];
+        $minifyRequestBody = json_encode($body);
+        $stringToSign = "POST:"."/1.0/qr/qr-mpm-query:".$accessToken.":".strtolower(hash("sha256", $minifyRequestBody)).":".$this->generateTimestamp();
+        $symmetricSignature = base64_encode(hash_hmac('sha512', $stringToSign, env('YUKK_CLIENT_SECRET'), true));
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '.$accessToken,
+            'X-TIMESTAMP' => $this->generateTimestamp(),
+            'X-SIGNATURE' => $symmetricSignature,
+            'X-PARTNER-ID' => env('YUKK_CLIENT_ID'),
+            'X-EXTERNAL-ID' => $unique,
+            'CHANNEL-ID' => '00001'
+        ];
+
+        $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
+        $queryResult = $sendQueryPayment->json();
+        Transaction::where('transactionId', $trxId)->update([
+            'payment_status' => $queryResult['transactionStatusDesc'],
+            'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
+        ]);
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Transaction history refreshed!',
+            'toast' => false,
+            'position' => 'top-end',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+        return to_route('transactions.index');
     }
     // YUKK hit API to JADE
     public function generateAccessTokenForYUKK()
