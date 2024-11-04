@@ -15,13 +15,21 @@
             <span class="sidebar-text">{{ __('Dashboard') }}</span>
         </a>
     </li>
-    
+
     <li class="nav-item {{ request()->routeIs('products.index') ? 'active' : '' }}">
         <a href="{{ route('products.index') }}" class="nav-link" wire:navigate>
             <span class="sidebar-icon me-3">
                 <i class="fas fa-boxes"></i>
             </span>
             <span class="sidebar-text">{{ __('Products') }}</span>
+        </a>
+    </li>
+    <li class="nav-item {{ request()->routeIs('coupons.index') ? 'active' : '' }}">
+        <a href="{{ route('coupons.index') }}" class="nav-link" wire:navigate>
+            <span class="sidebar-icon me-3">
+                <i class="fas fa-ticket-simple"></i>
+            </span>
+            <span class="sidebar-text">{{ __('Coupons') }}</span>
         </a>
     </li>
     <li class="nav-item {{ request()->routeIs('forms.index') || request()->routeIs('forms.participant.index') ? 'active' : '' }}">

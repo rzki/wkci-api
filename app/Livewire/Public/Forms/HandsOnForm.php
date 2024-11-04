@@ -3,12 +3,16 @@
 namespace App\Livewire\Public\Forms;
 
 use App\Mail\HandsOnRegistrationMail;
+use App\Models\Coupon;
+use App\Models\CouponUsage;
 use App\Models\Form;
 use App\Models\Product;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -21,6 +25,7 @@ use Milon\Barcode\DNS2D;
 class HandsOnForm extends Component
 {
     public $name_str, $name_ktp, $nik, $npa, $email, $pdgi_cabang, $no_telepon;
+    public $code, $message,$couponCode, $couponValid = false, $discount, $discountedPrice;
     public $isHandsOnChecked = [], $selectedSeminarId, $totalAmount = 0, $handsOn, $seminars;
 
     public function mount()
@@ -62,7 +67,6 @@ class HandsOnForm extends Component
             }
         }
     }
-
     public function submit(Request $request)
     {
         $seminar = $this->seminars->find($this->selectedSeminarId);
@@ -110,7 +114,8 @@ class HandsOnForm extends Component
         Cache::put('handsOnForm', $handsOn);
         Cache::put('trxDataForm', $trxForm);
         Mail::to($this->email)->send(new HandsOnRegistrationMail($handsOn));
-        return $this->redirectRoute('generate_qr', ['amount' => $this->totalAmount]);
+        $amount = base64_encode($this->totalAmount);
+        return $this->redirectRoute('generate_qr', ['amount' => $amount]);
     }
     #[Layout('components.layouts.public')]
     #[Title('Hands-On Registration')]

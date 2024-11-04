@@ -77,7 +77,7 @@ class YukkApiController extends Controller
     {
         $generateToken = $this->generateAccessToken();
         $accessToken = $generateToken['accessToken'];
-        $amount = request()->input('amount') ?? '1';
+        $amount = base64_decode(request()->input('amount')) ?? '1';
         $formData = Cache::get('handsOnForm');
         $trxFormData = Cache::get('trxDataForm');
         $this->generatePartnerReferenceNo();

@@ -55,6 +55,7 @@ class HandsOnFormExport extends DefaultValueBinder implements FromCollection, Wi
             $handsOn->trx_history ?? '',
             $handsOn->submitted_date ?? '',
             $handsOn->paid_at ?? '',
+            $handsOn->applied_coupon ?? '',
             $handsOn->status ?? ''
         ];
     }
@@ -91,6 +92,7 @@ class HandsOnFormExport extends DefaultValueBinder implements FromCollection, Wi
             'Bukti Pembayaran',
             'Tanggal Submit',
             'Tanggal Pembayaran',
+            'Kode Promo',
             'Status Pembayaran'
         ];
     }

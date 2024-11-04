@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('trx_no')->nullable();
             $table->dateTime('paid_at')->nullable();
             $table->string('status')->nullable();
+            $table->string('applied_coupon')->nullable();
             $table->timestamp('submitted_date')->useCurrent();
             $table->timestamps();
         });

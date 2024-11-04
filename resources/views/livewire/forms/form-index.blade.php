@@ -95,6 +95,7 @@
                                                     <th>{{ __('Paid At') }}</th>
                                                     <th>{{ __('Payment Status') }}</th>
                                                     <th>{{ __('Bukti Transfer') }}</th>
+                                                    <th>{{ __('Kode Promo') }}</th>
                                                     <th>{{ __('Submit Date') }}</th>
                                                     <th style="width: 5em;">{{ __('Action') }}</th>
                                                 </tr>
@@ -136,6 +137,7 @@
                                                         @else
                                                             <td>-</td>
                                                         @endif
+                                                        <td>{{ $form->applied_coupon ?? '' }}</td>
                                                         @if($form->submitted_date != null)
                                                             <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) ?? '' }}</td>
                                                         @else
