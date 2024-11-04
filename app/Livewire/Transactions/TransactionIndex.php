@@ -45,7 +45,6 @@ class TransactionIndex extends Component
     {
         $this->trx = Transaction::where('transactionId', $this->transactionId)->first();
         $this->trx->delete();
-        Storage::disk('public')->delete($this->trx->barcode);
         session()->flash('alert', [
             'type' => 'success',
             'title' => 'Transaction history deleted successfully!',
