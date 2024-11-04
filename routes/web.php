@@ -9,6 +9,10 @@ use App\Livewire\Forms\FormImport;
 use App\Livewire\Forms\Participants\FormParticipantImport;
 use App\Livewire\Forms\Participants\FormParticipantIndex;
 use App\Livewire\MyProfile;
+use App\Livewire\Products\Coupons\CouponCodeCreate;
+use App\Livewire\Products\Coupons\CouponCodeEdit;
+use App\Livewire\Products\Coupons\CouponCodeIndex;
+use App\Livewire\Public\Forms\Buy6Get7Form;
 use App\Livewire\Public\Forms\FormDetail;
 use App\Livewire\Public\Forms\ParticipantFormDetail;
 use App\Livewire\Transactions\TransactionIndex;
@@ -44,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::get('products', ProductIndex::class)->name('products.index');
     Route::get('products/create', ProductCreate::class)->name('products.create');
     Route::get('products/edit/{productId}', ProductEdit::class)->name('products.edit');
+    Route::get('coupons', CouponCodeIndex::class)->name('coupons.index');
+    Route::get('coupons/create', CouponCodeCreate::class)->name('coupons.create');
+    Route::get('coupons/edit/{couponId}', CouponCodeEdit::class)->name('coupons.edit');
     Route::get('forms', FormIndex::class)->name('forms.index');
     Route::get('forms/edit/{formId}', FormEdit::class)->name('forms.edit');
     Route::get('forms/import', FormImport::class)->name('forms.import');
@@ -60,4 +67,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/register/seminar-hands-on', HandsOnForm::class)->name('hands-on_form');
+Route::get('/register/seminar-hands-on/buy6get7', Buy6Get7Form::class)->name('buy6get7_form');
 Route::get('/register/participant', ParticipantForm::class)->name('participant_form');
