@@ -37,7 +37,7 @@
                                                     <td>{{ $coupon->code ?? '' }}</td>
                                                     <td>{{ $coupon->name ?? '' }}</td>
                                                     <td>{{ $coupon->quantity ?? '' }}</td>
-                                                    <td>{{ $coupon->discount ?? '' }}</td>
+                                                    <td>{{ $coupon->amount ?? '' }}</td>
                                                     <td>{{ date('d/m/Y', strtotime($coupon->valid_from)) }}</td>
                                                     <td>{{ date('d/m/Y', strtotime($coupon->valid_to)) }}</td>
                                                     <td>

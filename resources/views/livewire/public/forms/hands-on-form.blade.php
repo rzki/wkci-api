@@ -32,7 +32,7 @@
                                 <div class="form-group mb-4">
                                     <label for="nik" class="form-label fw-bold">NIK</label>
                                     <input type="text" name="" id="" class="form-control"
-                                        wire:model='nik' required>
+                                        wire:model='nik' required maxlength="16" ">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -40,7 +40,7 @@
                                     <label for="npa"
                                         class="form-label fw-bold">{{ __('Nomor NPA (6 digit terakhir)') }}</label>
                                     <input type="text" name="npa" id="npa" class="form-control"
-                                        wire:model='npa' required>
+                                        wire:model='npa' required maxlength="6" ">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -99,12 +99,40 @@
                                         </div>
                                     @endforeach
                                 </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group mb-4">
+                                        <label for="couponCode" class="form-label fw-bold">{{ __('Promo Code (Optional)') }}</label>
+                                        <input type="text" name="couponCode" id="couponCode" class="form-control"
+                                               wire:model.live='couponCode'>
+                                        @if($messageSuccess)
+                                            <p class="text-success">{{ $messageSuccess }}</p>
+                                        @else
+                                            <p class="text-danger">{{ $messageFailed }}</p>
+                                        @endif
+                                        <small class="text-muted">Enter valid promo code</small>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group text-center mb-3">
                                 <h5>Total: <h4 class="fw-extrabold" wire:model='totalAmount'>
-                                        {{ 'Rp ' . number_format($totalAmount, 2, ',', '.') }}</h4>
+                                        {{ 'Rp ' . number_format($totalAmount, 2, ',', '.') }}
+                                    </h4>
                                 </h5>
                             </div>
+                            @if($discountedPrice)
+                            <div class="form-group text-center mb-3">
+                                <p>Discount: <h6 class="fw-extrabold" wire:model='discountedPrice'>
+                                        {{ '- Rp ' . number_format($discountedPrice, 2, ',', '.') }}
+                                    </h6>
+                                </p>
+                            </div>
+                                <div class="form-group text-center mb-3">
+                                    <h5>Total: <h4 class="fw-extrabold" wire:model='finalTotalAmount'>
+                                            {{ 'Rp ' . number_format($finalTotalAmount, 2, ',', '.') }}
+                                        </h4>
+                                    </h5>
+                                </div>
+                            @endif
                             <div class="d-grid">
                                 <button type="submit"
                                     class="btn btn-success text-white">{{ __('Submit') }}</button>

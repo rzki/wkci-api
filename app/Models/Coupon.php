@@ -12,8 +12,8 @@ class Coupon extends Model
     {
         return $this->hasMany(User::class);
     }
-    public function couponUsage()
+    public function product()
     {
-        return $this->hasMany(CouponUsage::class);
+        return $this->belongsTo(Product::class);
     }
 }

@@ -203,6 +203,7 @@ class YukkApiController extends Controller
         $endpoint = "/1.0/qr/qr-mpm-query";
 
         $trxId = base64_decode(request()->input('transactionId'));
+        $refNo = base64_decode(request()->input('refNo'));
         $partnerRef = base64_decode(request()->input('trx'));
 //        dd($partnerRef);
         $body = [
@@ -225,6 +226,10 @@ class YukkApiController extends Controller
 
         $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
         $queryResult = $sendQueryPayment->json();
+        Form::where('trx_no', $refNo)->update([
+            'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
+            'status' => $queryResult['transactionStatusDesc'],
+        ]);
         Transaction::where('transactionId', $trxId)->update([
             'payment_status' => $queryResult['transactionStatusDesc'],
             'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),

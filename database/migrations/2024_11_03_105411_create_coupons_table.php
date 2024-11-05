@@ -12,11 +12,12 @@ return new class extends Migration {
             $table->uuid('couponId');
             $table->string('code');
             $table->string('name');
-            $table->integer('min_usage')->nullable();
-            $table->integer('discount')->nullable();
             $table->integer('quantity')->nullable();
+            $table->string('amount')->nullable();
+            $table->string('type')->nullable();
             $table->date('valid_from')->nullable();
             $table->date('valid_to')->nullable();
+            $table->foreignId('product_id')->constrained('products', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

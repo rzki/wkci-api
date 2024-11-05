@@ -3,14 +3,18 @@
 namespace App\Livewire\Products\Coupons;
 
 use App\Models\Coupon;
+use App\Models\Product;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class CouponCodeCreate extends Component
 {
-    public $code, $name, $quantity, $discount, $from, $to;
-
+    public $products, $product, $code, $name, $quantity, $discount, $type, $from, $to;
+    public function mount()
+    {
+        $this->products = Product::all();
+    }
     public function create()
     {
         Coupon::create([
@@ -18,9 +22,11 @@ class CouponCodeCreate extends Component
             'code' => $this->code,
             'name' => $this->name,
             'quantity' => $this->quantity,
-            'discount' => $this->discount,
+            'amount' => $this->discount,
+            'type' => $this->type,
             'valid_from' => $this->from,
             'valid_to' => $this->to,
+            'product_id' => $this->product
         ]);
 
         session()->flash('alert', [
@@ -38,6 +44,8 @@ class CouponCodeCreate extends Component
     #[Title('Add New Coupon')]
     public function render()
     {
-        return view('livewire.products.coupons.coupon-code-create');
+        return view('livewire.products.coupons.coupon-code-create',[
+            'products' => $this->products
+        ]);
     }
 }

@@ -16,23 +16,17 @@
                                 <div class="col">
                                     <form wire:submit='update'>
                                         <div class="row">
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="form-group mb-3">
                                                     <label for="code" class="form-label">{{ __('Code') }}</label>
                                                     <input type="text" name="code" id="code" class="form-control"
                                                            wire:model='code'>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="form-group mb-3">
                                                     <label for="name" class="form-label">{{ __('Name') }}</label>
                                                     <input type="text" name="name" id="name" class="form-control" wire:model='name'>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <div class="form-group mb-3">
-                                                    <label for="discount" class="form-label">{{ __('Discount') }}</label>
-                                                    <input type="text" name="discount" id="discount" class="form-control" wire:model='discount'>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
@@ -43,15 +37,44 @@
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="form-group mb-3">
+                                                    <label for="discount" class="form-label">{{ __('Amount') }}</label>
+                                                    <input type="text" name="discount" id="discount" class="form-control" wire:model='discount'>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group mb-3">
+                                                    <label for="type" class="form-label">{{ __('Type') }}</label>
+                                                    <select name="type" id="type" class="form-control" wire:model='type'>
+                                                        <option value="">{{ __('Choose one...') }}</option>
+                                                        <option value="Fixed">{{ __('Fixed') }}</option>
+                                                        <option value="Percentage">{{ __('Percentage') }}</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-3">
                                                     <label for="valid_from" class="form-label">{{ __('Valid From') }}</label>
                                                     <input type="date" name="valid_from" id="valid_from" class="form-control" wire:model='from'>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4    ">
+                                            <div class="col-lg-6">
                                                 <div class="form-group mb-3">
                                                     <label for="valid_to" class="form-label">{{ __('Valid To') }}</label>
                                                     <input type="date" name="valid_to" id="valid_to" class="form-control" wire:model='to'>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group mb-3">
+                                                <label for="product" class="form-label">{{ __('Select product to Apply') }}</label>
+                                                <select name="product" id="product" class="form-control" wire:model='product'>
+                                                    <option value="">{{ __('Choose one...') }}</option>
+                                                    @foreach($products as $pr)
+                                                        <option value="{{ $pr->id }}">{{ $pr->name }}</option>
+                                                    @endforeach
+
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="d-grid">
