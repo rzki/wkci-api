@@ -90,6 +90,7 @@
                                                     <th>{{ __('Nomor NPA') }}</th>
                                                     <th>{{ __('Cabang PDGI') }}</th>
                                                     <th>{{ __('No Telepon') }}</th>
+                                                    <th>{{ __('Seminar') }}</th>
                                                     <th>{{ __('Hands-On') }}</th>
                                                     <th>{{ __('Total') }}</th>
                                                     <th>{{ __('Paid At') }}</th>
@@ -119,6 +120,7 @@
                                                         <td>{{ $form->npa ?? '' }}</td>
                                                         <td>{{ $form->cabang_pdgi ?? '' }}</td>
                                                         <td>{{ $form->phone_number ?? '' }}</td>
+                                                        <td>{{ $form->seminar ?? '' }}</td>
                                                         <td>{{ $form->attended ?? '' }}</td>
                                                         @if($form->amount == null)
                                                             <td>{{ "IDR 0,00" }}</td>
