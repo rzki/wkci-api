@@ -128,7 +128,7 @@ class YukkApiController extends Controller
             'paid_at' => null,
         ]);
         Cache::put('generateQrResult', $result);
-        $cachedResult = Cache::get('generateQrResult');
+//        $cachedResult = Cache::get('generateQrResult');
         $qr = new DNS2D();
         $qrWeb = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
         Mail::to($formData['email'])->send(new PaymentPendingMail($result, $formData));
