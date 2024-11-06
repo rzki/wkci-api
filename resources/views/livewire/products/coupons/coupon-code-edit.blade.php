@@ -68,13 +68,14 @@
                                         <div class="col-lg-12">
                                             <div class="form-group mb-3">
                                                 <label for="product" class="form-label">{{ __('Select product to Apply') }}</label>
-                                                <select name="product" id="product" class="form-control" wire:model='product'>
-                                                    <option value="">{{ __('Choose one...') }}</option>
-                                                    @foreach($products as $pr)
-                                                        <option value="{{ $pr->id }}">{{ $pr->name }}</option>
-                                                    @endforeach
-
-                                                </select>
+                                                <div wire:ignore>
+                                                    <select name="product" id="product" class="form-control" wire:model='product' multiple="multiple">
+                                                        <option value="">{{ __('Choose one...') }}</option>
+                                                        @foreach($products as $pr)
+                                                            <option value="{{ $pr->code }}">{{ '('.$pr->code.') - '.$pr->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="d-grid">
@@ -90,3 +91,25 @@
         </div>
     </div>
 </div>
+@script
+<script>
+    $(document).ready(function() {
+        $('#product').select2({
+            theme: "bootstrap-5",
+            placeholder: "Select products",
+            allowClear: true
+        });
+
+        // Update Livewire property when the Select2 selection changes
+        $('#product').on('change', function (e) {
+            var data = $(this).val();
+            $wire.set('product', data);
+        });
+    });
+
+    // Reinitialize Select2 when Livewire updates the component
+    Livewire.on('select2:updated', () => {
+        $('#product').select2();
+    });
+</script>
+@endscript

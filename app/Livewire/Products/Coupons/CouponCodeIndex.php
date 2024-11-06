@@ -3,6 +3,7 @@
 namespace App\Livewire\Products\Coupons;
 
 use App\Models\Coupon;
+use App\Models\Product;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -37,9 +38,8 @@ class CouponCodeIndex extends Component
     #[Title('All Coupons')]
     public function render()
     {
-//        dd(Coupon::all());
         return view('livewire.products.coupons.coupon-code-index',[
-            'coupons' => Coupon::orderByDesc('created_at')->paginate($this->perPage)
+            'coupons' => Coupon::orderByDesc('created_at')->paginate($this->perPage),
         ]);
     }
 }

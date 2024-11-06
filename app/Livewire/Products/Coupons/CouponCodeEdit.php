@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class CouponCodeEdit extends Component
 {
-    public $products, $productId, $coupon, $couponId, $code, $name, $quantity, $discount, $type, $from, $to, $product;
+    public $products, $productId, $coupon, $couponId, $code, $name, $quantity, $discount, $type, $from, $to, $product = [];
     public function mount($couponId)
     {
         $this->coupon = Coupon::where('couponId', $couponId)->first();
@@ -22,10 +22,12 @@ class CouponCodeEdit extends Component
         $this->type = $this->coupon->type;
         $this->from = $this->coupon->valid_from;
         $this->to = $this->coupon->valid_to;
-        $this->product = $this->coupon->product_id;
+        $this->product = $this->coupon->applied_products;
+
     }
     public function update()
     {
+        $productCode = implode(', ', $this->product);
         Coupon::where('couponId', $this->couponId)->update([
             'code' => $this->code,
             'name' => $this->name,
@@ -34,7 +36,7 @@ class CouponCodeEdit extends Component
             'type' => $this->type,
             'valid_from' => $this->from,
             'valid_to' => $this->to,
-            'product_id' => $this->product
+            'applied_products' => $productCode
         ]);
 
         session()->flash('alert', [
@@ -52,6 +54,7 @@ class CouponCodeEdit extends Component
     #[Title('Edit Coupon')]
     public function render()
     {
+//        dd(Product::whereIn('code', $productCode)->first());
         return view('livewire.products.coupons.coupon-code-edit',[
             'products' => $this->products
         ]);

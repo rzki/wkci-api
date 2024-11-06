@@ -10,14 +10,15 @@ use Livewire\Component;
 
 class CouponCodeCreate extends Component
 {
-    public $products, $product, $code, $name, $quantity, $discount, $type, $from, $to;
+    public $products, $product = [], $code, $name, $quantity, $discount, $type, $from, $to;
     public function mount()
     {
         $this->products = Product::all();
     }
     public function create()
     {
-        Coupon::create([
+        $productCode = implode(', ', $this->product);
+        $coupon = Coupon::create([
             'couponId' => Str::orderedUuid(),
             'code' => $this->code,
             'name' => $this->name,
@@ -26,9 +27,9 @@ class CouponCodeCreate extends Component
             'type' => $this->type,
             'valid_from' => $this->from,
             'valid_to' => $this->to,
-            'product_id' => $this->product
+            'applied_products' => $productCode,
         ]);
-
+        dd($coupon);
         session()->flash('alert', [
             'type' => 'success',
             'title' => 'Coupon successfully added!',
