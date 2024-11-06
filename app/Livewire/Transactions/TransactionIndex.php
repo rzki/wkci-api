@@ -4,6 +4,7 @@ namespace App\Livewire\Transactions;
 
 use App\Exports\HandsOnFormExport;
 use App\Exports\TransactionExport;
+use App\Models\Form;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
@@ -44,6 +45,7 @@ class TransactionIndex extends Component
     public function delete()
     {
         $this->trx = Transaction::where('transactionId', $this->transactionId)->first();
+        Form::where('trx_no', $this->trx->trx_ref_no)->delete();
         $this->trx->delete();
         session()->flash('alert', [
             'type' => 'success',
