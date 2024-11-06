@@ -76,8 +76,9 @@
                                             <div class="row mb-3 border border-3 border-black py-3 rounded-2">
                                                 <div class="col-lg-1 d-flex align-items-center justify-content-center">
                                                     <input type="checkbox" name="isHandsOnChecked" id="isHandsOnChecked"
-                                                        wire:model='isHandsOnChecked.{{ $ho->id }}' value="{{ $ho->id }}" wire:change='calculateTotalAmount' @if($ho->code ==
-                                                        'HO10') disabled @endif>
+                                                        wire:model='isHandsOnChecked.{{ $ho->id }}' value="{{ $ho->id }}" wire:change='calculateTotalAmount' @if(in_array
+                                                        ($ho->code, ['HO5','HO7','HO10'])) disabled
+                                                        @endif>
                                                 </div>
                                                 <div class="col-lg-11">
                                                     <label for="checkedHandsOn">
