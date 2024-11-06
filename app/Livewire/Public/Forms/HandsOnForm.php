@@ -114,7 +114,7 @@ class HandsOnForm extends Component
             }
         }else{
             $this->coupon = null;
-            $this->message = 'Coupon code either invalid or not existed';
+            $this->messageFailed = 'Coupon code either invalid or not existed';
         }
         $this->calculateTotalAmount();
     }
@@ -143,10 +143,13 @@ class HandsOnForm extends Component
             $this->discountedPrice = 0;
             $this->finalTotalAmount = $this->totalAmount;
         }
-
     }
     public function submit(Request $request)
     {
+        // Before proceeding, check if the coupon still has quantity available
+        if ($this->coupon && $this->coupon->quantity <= 0) {
+            $this->messageFailed = 'Coupon code is no longer available.';
+        }
         $seminar = $this->seminars->find($this->selectedSeminarId);
         $selectedOptionCodes = [];
         foreach ($this->isHandsOnChecked as $optionId => $isSelected) {
@@ -189,7 +192,10 @@ class HandsOnForm extends Component
                 'amount' => $this->finalTotalAmount,
                 'submitted_date' => Carbon::now()
             ]);
-//        dd($handsOn);
+        // Decrement coupon quantity only after form is successfully submitted
+        if ($this->coupon) {
+            $this->coupon->decrement('quantity');
+        }
         Cache::put('handsOnForm', $handsOn);
         Cache::put('trxDataForm', $trxForm);
         Mail::to($this->email)->send(new HandsOnRegistrationMail($handsOn));
