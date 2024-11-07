@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
 use App\Livewire\Dashboard;
 use App\Livewire\Forms\FormEdit;
 use App\Livewire\Forms\FormIndex;
