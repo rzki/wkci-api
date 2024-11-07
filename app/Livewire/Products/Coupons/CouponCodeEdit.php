@@ -22,12 +22,12 @@ class CouponCodeEdit extends Component
         $this->type = $this->coupon->type;
         $this->from = $this->coupon->valid_from;
         $this->to = $this->coupon->valid_to;
-        $this->product = $this->coupon->applied_products;
+        $this->product = explode(',', $this->coupon->applied_products);
 
     }
     public function update()
     {
-        $productCode = implode(', ', $this->product);
+        $productCode = implode(',', $this->product);
         Coupon::where('couponId', $this->couponId)->update([
             'code' => $this->code,
             'name' => $this->name,

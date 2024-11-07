@@ -32,7 +32,7 @@
                                 <div class="form-group mb-4">
                                     <label for="nik" class="form-label fw-bold">NIK</label>
                                     <input type="text" name="" id="" class="form-control"
-                                        wire:model='nik' required maxlength="16" ">
+                                        wire:model='nik' required maxlength="16">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -40,12 +40,13 @@
                                     <label for="npa"
                                         class="form-label fw-bold">{{ __('Nomor NPA (6 digit terakhir)') }}</label>
                                     <input type="text" name="npa" id="npa" class="form-control"
-                                        wire:model='npa' required maxlength="6" ">
+                                        wire:model='npa' required maxlength="6">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group mb-4">
-                                    <label for="pdgi_cabang" class="form-label fw-bold">{{ __('PDGI Cabang (Opsional)') }}</label>
+                                    <label for="pdgi_cabang"
+                                        class="form-label fw-bold">{{ __('PDGI Cabang (Opsional)') }}</label>
                                     <input type="text" name="pdgi_cabang" id="pdgi_cabang" class="form-control"
                                         wire:model='pdgi_cabang'>
                                 </div>
@@ -76,9 +77,10 @@
                                             <div class="row mb-3 border border-3 border-black py-3 rounded-2">
                                                 <div class="col-lg-1 d-flex align-items-center justify-content-center">
                                                     <input type="checkbox" name="isHandsOnChecked" id="isHandsOnChecked"
-                                                        wire:model='isHandsOnChecked.{{ $ho->id }}' value="{{ $ho->id }}" wire:change='calculateTotalAmount' @if(in_array
-                                                        ($ho->code, ['HO5','HO7','HO10'])) disabled
-                                                        @endif>
+                                                        wire:model='isHandsOnChecked.{{ $ho->id }}'
+                                                        value="{{ $ho->id }}" wire:change='calculateTotalAmount'
+                                                        @if (in_array($ho->code, ['HO5', 'HO7'])) @if (!$enableHO5andHO7) disabled @endif
+                                                    @elseif($ho->code === 'HO10') disabled @endif>
                                                 </div>
                                                 <div class="col-lg-11">
                                                     <label for="checkedHandsOn">
@@ -87,8 +89,14 @@
                                                         <p class="fw-extrabold text-uppercase mb-1">{{ $ho['name'] }}
                                                         </p>
                                                         <p class="mb-1">Topic : {{ $ho['description'] }}</p>
-                                                        <p class="fw-bold mb-1">
-                                                            IDR.{{ number_format($ho['price'], 2, ',', '.') }}</p>
+                                                        @if (in_array($ho->code, ['HO5', 'HO7']) && $enableHO5andHO7)
+                                                            <p class="fw-bold mb-1 text-decoration-line-through">
+                                                                IDR.{{ number_format($ho['price'], 2, ',', '.') }}</p>
+                                                            <h4 class="text-danger fw-bolder text-uppercase">{{ __('Free') }}</h4>
+                                                        @else
+                                                            <p class="fw-bold mb-1">
+                                                                IDR.{{ number_format($ho['price'], 2, ',', '.') }}</p>
+                                                        @endif
                                                         <p class="text-capitalize mb-1">
                                                             {{ date('l, d F Y', strtotime($ho['date'])) }}</p>
                                                         <p class="text-capitalize mb-1">Pukul :
@@ -102,10 +110,11 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group mb-4">
-                                        <label for="couponCode" class="form-label fw-bold">{{ __('Promo Code (Optional)') }}</label>
+                                        <label for="couponCode"
+                                            class="form-label fw-bold">{{ __('Promo Code (Optional)') }}</label>
                                         <input type="text" name="couponCode" id="couponCode" class="form-control"
-                                               wire:model.live='couponCode'>
-                                        @if($messageSuccess)
+                                            wire:model.live='couponCode'>
+                                        @if ($messageSuccess)
                                             <p class="text-success">{{ $messageSuccess }}</p>
                                         @else
                                             <p class="text-danger">{{ $messageFailed }}</p>
@@ -120,13 +129,14 @@
                                     </h4>
                                 </h5>
                             </div>
-                            @if($discountedPrice)
-                            <div class="form-group text-center mb-3">
-                                <p>Discount: <h6 class="fw-extrabold" wire:model='discountedPrice'>
+                            @if ($discountedPrice)
+                                <div class="form-group text-center mb-3">
+                                    <p>Discount:
+                                    <h6 class="fw-extrabold" wire:model='discountedPrice'>
                                         {{ '- Rp ' . number_format($discountedPrice, 2, ',', '.') }}
                                     </h6>
-                                </p>
-                            </div>
+                                    </p>
+                                </div>
                                 <div class="form-group text-center mb-3">
                                     <h5>Total: <h4 class="fw-extrabold" wire:model='finalTotalAmount'>
                                             {{ 'Rp ' . number_format($finalTotalAmount, 2, ',', '.') }}
