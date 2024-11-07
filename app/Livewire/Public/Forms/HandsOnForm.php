@@ -111,13 +111,14 @@ class HandsOnForm extends Component
         if ($coupon) {
             // Ensure coupon applies to the selected seminar or hands-on option
             $isCouponApplicable = false;
-
-            if ($coupon->product_id) {
-                if ($coupon->product_id == $this->selectedSeminarId) {
+            $seminarCode = Product::where('id', $this->selectedSeminarId)->where('type', 'Seminar')->get();
+            if ($coupon->applied_products) {
+                if ($coupon->applied_products == $seminarCode) {
                     $isCouponApplicable = true;
                 } else {
-                    foreach ($this->isHandsOnChecked as $optionId => $isSelected) {
-                        if ($isSelected && $coupon->product_id == $optionId) {
+                    $handsOnCode = Product::whereIn('id', $this->isHandsOnChecked)->get();
+                    foreach ($handsOnCode as $optionId => $isSelected) {
+                        if ($isSelected && $coupon->applied_products == $optionId) {
                             $isCouponApplicable = true;
                             break;
                         }
