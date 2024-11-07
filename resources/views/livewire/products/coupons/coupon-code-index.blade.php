@@ -25,7 +25,6 @@
                                                 <th>{{ __('Name') }}</th>
                                                 <th>{{ __('Quantity') }}</th>
                                                 <th>{{ __('Discount') }}</th>
-                                                <th>{{ __('Valid Products') }}</th>
                                                 <th>{{ __('Valid From') }}</th>
                                                 <th>{{ __('Valid To') }}</th>
                                                 <th>{{ __('Action') }}</th>
@@ -39,7 +38,6 @@
                                                     <td>{{ $coupon->name ?? '' }}</td>
                                                     <td>{{ $coupon->quantity ?? '' }}</td>
                                                     <td>{{ $coupon->amount ?? '' }}</td>
-                                                    <td>{{ $coupon->applied_products ?? '' }}</td>
                                                     <td>{{ date('d/m/Y', strtotime($coupon->valid_from)) }}</td>
                                                     <td>{{ date('d/m/Y', strtotime($coupon->valid_to)) }}</td>
                                                     <td>

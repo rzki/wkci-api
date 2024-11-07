@@ -38,8 +38,9 @@ class CouponCodeIndex extends Component
     #[Title('All Coupons')]
     public function render()
     {
+        $couponCode = Coupon::all();
         return view('livewire.products.coupons.coupon-code-index',[
-            'coupons' => Coupon::orderByDesc('created_at')->paginate($this->perPage),
+            'coupons' => Coupon::orderByDesc('created_at')->paginate($this->perPage)
         ]);
     }
 }
