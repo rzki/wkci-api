@@ -73,6 +73,8 @@
                                             <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
                                             <button wire:click="deleteSelected" class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Delete Selected Data')
                                             }}</button>
+                                            <button wire:click="bulkSendEmail" class="btn btn-success text-white {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Send Email to selected data')
+                                            }}</button>
                                         </div>
                                     </div>
                                     <div class="table-wrapper table-responsive">

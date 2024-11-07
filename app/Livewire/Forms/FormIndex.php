@@ -2,24 +2,23 @@
 
 namespace App\Livewire\Forms;
 
-use App\Exports\HandsOnFormExport;
-use App\Mail\HandsOnRegistrationMail;
 use App\Models\Form;
-use App\Models\Transaction;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
+use App\Exports\HandsOnFormExport;
+use App\Jobs\SendPaidBulkEmailJob;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\HandsOnRegistrationMail;
+use Illuminate\Support\Facades\Storage;
 
 class FormIndex extends Component
 {
     use WithPagination;
     public $perPage = 5, $search;
     public $form, $formId, $start_date = '', $end_date = '';
-    public $formCollection, $selectedItems = [];
+    public $formCollection, $selectedItems = [], $selectedRecipient = [];
     protected $listeners = ['deleteConfirmed' => 'delete'];
     public function deleteSelected()
     {
@@ -80,12 +79,30 @@ class FormIndex extends Component
         Mail::to($handsOn->email)->send(new HandsOnRegistrationMail($handsOn));
         return $this->redirectRoute('forms.index', navigate: true);
     }
-
     public function export()
     {
         $filename = 'JADE_HandsOnForm_'.date('d-m-Y').'.xlsx';
         return Excel::download(new HandsOnFormExport($this->start_date, $this->end_date), $filename);
     }
+    public function bulkSendEmail()
+    {
+        $formPaid = Form::whereIn('id', $this->selectedItems)->where('status', 'Paid')->get();
+        foreach($formPaid as $paid){
+            SendPaidBulkEmailJob::dispatch($paid);
+        }
+
+        $this->selectedItems = [];
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Email confirmation sent!',
+            'toast' => true,
+            'position' => 'top-end',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+    }
+
     #[Title('Forms')]
     public function render()
     {
