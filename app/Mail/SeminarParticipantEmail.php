@@ -26,16 +26,9 @@ class SeminarParticipantEmail extends Mailable
      */
     public function envelope(): Envelope
     {
-        if($this->form->trx_no == null)
-        {
-            return new Envelope(
-                subject: 'Seminar Registration Details',
-            );
-        }else{
-            return new Envelope(
-                subject: 'Seminar Registration Details - '.'['.$this->form->trx_no.']',
-            );
-        }
+        return new Envelope(
+            subject: 'Seminar Registration Details',
+        );
     }
 
     /**
