@@ -113,12 +113,12 @@ class HandsOnForm extends Component
             $isCouponApplicable = false;
             $seminarCode = Product::where('id', $this->selectedSeminarId)->where('type', 'Seminar')->get();
             if ($coupon->applied_products) {
-                if ($coupon->applied_products == $seminarCode) {
+                if ($coupon->applied_products == $seminarCode->code) {
                     $isCouponApplicable = true;
                 } else {
                     $handsOnCode = Product::whereIn('id', $this->isHandsOnChecked)->get();
                     foreach ($handsOnCode as $optionId => $isSelected) {
-                        if ($isSelected && $coupon->applied_products == $optionId) {
+                        if ($isSelected && $coupon->applied_products == $optionId->code) {
                             $isCouponApplicable = true;
                             break;
                         }
