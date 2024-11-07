@@ -112,8 +112,8 @@
                                     <div class="form-group mb-4">
                                         <label for="couponCode"
                                             class="form-label fw-bold">{{ __('Promo Code (Optional)') }}</label>
-                                        <input type="text" name="couponCode" id="couponCode" class="form-control"
-                                            wire:model.live='couponCode'>
+                                        <input type="text" name="couponCode" id="couponCode" class="form-control mb-3"
+                                            wire:model.live.debounce.1000ms='couponCode'>
                                         @if ($messageSuccess)
                                             <p class="text-success">{{ $messageSuccess }}</p>
                                         @else

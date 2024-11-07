@@ -71,7 +71,7 @@
                                                         <select name="product" id="product" class="form-control" wire:model='product' multiple="multiple">
                                                             <option value="">{{ __('Choose one...') }}</option>
                                                             @foreach($products as $pr)
-                                                                <option value="{{ $pr->code }}">{{ '('.$pr->code.') - '.$pr->name }}</option>
+                                                                <option value="{{ $pr->id }}">{{ '('.$pr->code.') - '.$pr->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

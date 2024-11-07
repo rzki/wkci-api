@@ -90,14 +90,22 @@ class HandsOnForm extends Component
         }
 
         // Calculate total for selected hands-on options
-        // foreach ($this->isHandsOnChecked as $optionId => $isSelected) {
-        //     if ($isSelected) {
-        //         $selectedHandsOnOption = $this->handsOn->find($optionId);
-        //         if ($selectedHandsOnOption) {
-        //             $this->handsOnTotal += $selectedHandsOnOption->price;
-        //         }
-        //     }
-        // }
+        foreach ($this->isHandsOnChecked as $optionId => $isSelected) {
+            if ($isSelected) {
+                $selectedHandsOnOption = $this->handsOn->find($optionId);
+                // if ($selectedHandsOnOption) {
+                //     $this->handsOnTotal += $selectedHandsOnOption->price;
+                // }
+                if ($selectedHandsOnOption) {
+                // Skip HO5 and HO7 if they should be free
+                if (in_array($selectedHandsOnOption->code, ['HO5', 'HO7']) && $this->enableHO5andHO7) {
+                    continue;
+                }
+                // Add price for other hands-on options
+                $this->handsOnTotal += $selectedHandsOnOption->price;
+            }
+            }
+        }
         $this->totalAmount = $this->seminarTotal + $this->handsOnTotal;
         $this->applyDiscount();
     }
@@ -109,16 +117,19 @@ class HandsOnForm extends Component
     {
         $coupon = Coupon::where('code', $value)->where('valid_from', '<=', Carbon::now())->where('valid_to', '>=', Carbon::now())->first();
         if ($coupon) {
+            if($coupon->quantity <1){
+                $this->coupon = null;
+                $this->messageFailed = 'Coupon code is no longer available.';
+                return;
+            }
             // Ensure coupon applies to the selected seminar or hands-on option
             $isCouponApplicable = false;
-            $seminarCode = Product::where('id', $this->selectedSeminarId)->where('type', 'Seminar')->get();
-            if ($coupon->applied_products) {
-                if ($coupon->applied_products == $seminarCode->code) {
+            if ($coupon->product_id) {
+                if ($coupon->product_id == $this->selectedSeminarId) {
                     $isCouponApplicable = true;
                 } else {
-                    $handsOnCode = Product::whereIn('id', $this->isHandsOnChecked)->get();
-                    foreach ($handsOnCode as $optionId => $isSelected) {
-                        if ($isSelected && $coupon->applied_products == $optionId->code) {
+                    foreach ($this->isHandsOnChecked as $optionId => $isSelected) {
+                        if ($isSelected && $coupon->product_id == $optionId) {
                             $isCouponApplicable = true;
                             break;
                         }
@@ -223,6 +234,7 @@ class HandsOnForm extends Component
     #[Title('Hands-On Registration')]
     public function render()
     {
+        // dd($this->selectedSeminarId);
         return view('livewire.public.forms.hands-on-form');
     }
 }

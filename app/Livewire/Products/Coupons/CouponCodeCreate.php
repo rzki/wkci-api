@@ -27,9 +27,9 @@ class CouponCodeCreate extends Component
             'type' => $this->type,
             'valid_from' => $this->from,
             'valid_to' => $this->to,
-            'applied_products' => $productCode,
+            'product_id' => $productCode,
         ]);
-        dd($coupon);
+        // dd($coupon);
         session()->flash('alert', [
             'type' => 'success',
             'title' => 'Coupon successfully added!',
