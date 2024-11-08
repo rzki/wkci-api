@@ -13,84 +13,84 @@
                         <div class="row d-flex justify-content-center">
                             <div class="participant-table w-50 d-flex justify-content-center">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('Nama Sesuai STR') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->name_str }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('Nama Sesuai KTP') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->full_name }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('Email') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->email }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('NIK') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->nik }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('NPA') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->npa }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('PDGI Cabang') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->cabang_pdgi ?? '' }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('Nomor Telepon') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7">
                                         <p>{{ $forms->phone_number }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <p class="fw-bolder mb-0 pb-0">
                                             {{ __('Seminar & HO') }}
                                         </p>
                                         <!-- /.mb-0 -->
                                     </div>
-                                    <div class="col-lg-6">
-                                        <p>{{ $forms->attended ?? '' }}</p>
+                                    <div class="col-lg-7">
+                                        <p>{{ $forms->seminar. ',' .$forms->attended ?? '' }}</p>
                                     </div>
                                     <!-- /.col-lg-6 -->
                                 </div>
