@@ -17,7 +17,8 @@ class TransactionManualQR extends Component
         $trx = Transaction::create([
             'transactionId' => Str::orderedUuid(),
             'participant_name' => $this->name,
-            'amount' => $this->amount
+            'amount' => $this->amount,
+            'submitted_date' => now()
         ]);
         Cache::put('manualQR', $trx);
         return to_route('generate_manual_qr', [

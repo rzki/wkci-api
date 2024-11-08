@@ -52,13 +52,15 @@ class DataFormImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'npa' => $row['npa'],
             'cabang_pdgi' => $row['cabang_pdgi'],
             'phone_number' => $row['phone_number'],
+            'seminar' => $row['seminar'] ?? '', 
             'attended' => $row['attended'],
             'amount' => $row['amount'] ?? '0,00',
-            'trx_history' => $row['Bukti Transfer'],
+            'trx_history' => $row['Bukti Transfer'] ?? '',
             'barcode' => $path,
             'paid_at' => $dateFormat.' '.$timeFormat ?? '',
             'status' => 'Paid',
             'submitted_date' => $submitDate ?? '',
+            'applied_coupon' => $row['applied_coupon'] ?? ''
         ]);
         Transaction::create([
             'transactionId' => Str::orderedUuid(),
