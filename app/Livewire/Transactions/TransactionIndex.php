@@ -2,12 +2,10 @@
 
 namespace App\Livewire\Transactions;
 
-use App\Exports\HandsOnFormExport;
 use App\Exports\TransactionExport;
+use App\Http\Controllers\YukkApiController;
 use App\Models\Form;
 use App\Models\Transaction;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -74,6 +72,20 @@ class TransactionIndex extends Component
             'refNo' => base64_encode($this->trx->trx_ref_no)
         ]);
     }
+    public function bulkUpdatePaymentStatus()
+    {
+        $trx = Transaction::whereIn('id', $this->selectedItems)->get();
+        // dd($trx);
+        foreach($trx as $t)
+        {
+            return $this->redirectRoute('query_payment_status', [
+                'transactionId' => base64_encode($t->transactionId),
+                'trx' => base64_encode($t->partner_ref_no),
+                'refNo' => base64_encode($t->trx_ref_no)
+            ]);
+        }
+    }
+    
     #[Title('All Transaction History')]
     public function render()
     {

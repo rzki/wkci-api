@@ -12,9 +12,12 @@ class CouponCodeIndex extends Component
 {
     use WithPagination;
     public $perPage = 5;
-    public $coupon, $couponId;
+    public $couponCode, $coupon, $couponId;
     protected $listeners = ['deleteConfirmed' => 'delete'];
-
+    public function mount()
+    {
+        $this->couponCode = Coupon::all();
+    }
     public function deleteConfirm($couponId)
     {
         $this->couponId = $couponId;
@@ -38,9 +41,9 @@ class CouponCodeIndex extends Component
     #[Title('All Coupons')]
     public function render()
     {
-        $couponCode = Coupon::all();
+
         return view('livewire.products.coupons.coupon-code-index',[
-            'coupons' => Coupon::orderByDesc('created_at')->paginate($this->perPage)
+            'coupons' => Coupon::orderByDesc('created_at')->paginate($this->perPage),
         ]);
     }
 }

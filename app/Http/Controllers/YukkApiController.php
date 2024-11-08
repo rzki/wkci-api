@@ -80,6 +80,7 @@ class YukkApiController extends Controller
         $amount = base64_decode(request()->input('amount')) ?? '1';
         $formData = Cache::get('handsOnForm');
         $trxFormData = Cache::get('trxDataForm');
+        $trxManualQR = Cache::get('manualQR');
         $this->generatePartnerReferenceNo();
         $requestBody = [
             'partnerReferenceNo' => Cache::get('partnerRefNo'),
@@ -136,7 +137,62 @@ class YukkApiController extends Controller
         return view('generated-qr', compact('result', 'qrWeb'));
 //         return [ request()->method().' '.$urlGenerateQR, $headers, $requestBody, $cachedResult ];
     }
-
+    public function generateManualQR()
+    {
+        $generateToken = $this->generateAccessToken();
+        $accessToken = $generateToken['accessToken'];
+        $amount = base64_decode(request()->input('amount')) ?? '1';
+        $trxManualQR = Cache::get('manualQR');
+        $this->generatePartnerReferenceNo();
+        $requestBody = [
+            'partnerReferenceNo' => Cache::get('partnerRefNo'),
+            'amount' => [
+                'value' => $amount.'.00',
+                'currency' => 'IDR'
+            ],
+            'feeAmount' => [
+                'value' => '0.00',
+                'currency' => 'IDR'
+            ],
+            'storeId' => env('YUKK_STORE_ID'),
+            'additionalInfo' => [
+                'additionalField' => [
+                    "merchantId" => "SAI"
+                ]
+            ]
+        ];
+        $minifiedRequestBody = json_encode($requestBody);
+        $urlGenerateQR = $this->baseUrl."/1.0/qr/qr-mpm-generate";
+        // HTTPMethod+”:“+ EndpointUrl +":"+ AccessToken+":“+ Lowercase(HexEncode(SHA256(minify(RequestBody))))+ ":“ +TimeStamp
+        $stringToSign = "POST:"."/1.0/qr/qr-mpm-generate:".$accessToken.":".strtolower(hash("sha256", $minifiedRequestBody)).":".$this->generateTimestamp();
+        $symmetricSignature = base64_encode(hash_hmac('sha512', $stringToSign, env('YUKK_CLIENT_SECRET'), true));
+        $unique = random_int(12,12).round(microtime(true)*10000);
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '. $accessToken,
+            'X-TIMESTAMP' => $this->generateTimestamp(),
+            'X-SIGNATURE' => $symmetricSignature,
+            'X-PARTNER-ID' => env('YUKK_CLIENT_ID'),
+            'X-EXTERNAL-ID' => $unique,
+            'CHANNEL-ID' => '00001'
+        ];
+        $sendRequestQR = Http::withHeaders($headers)->post($urlGenerateQR, $requestBody);
+        $result = $sendRequestQR->json();
+        Transaction::where('transactionId', $trxManualQR['transactionId'])->update([
+            'trx_ref_no' => $result['referenceNo'],
+            'partner_ref_no' => $result['partnerReferenceNo'],
+            'qrCode' => $result['qrContent'],
+            'payment_status' => 'Pending',
+            'paid_at' => null,
+        ]);
+        Cache::put('generateQrResult', $result);
+//        $cachedResult = Cache::get('generateQrResult');
+        $qr = new DNS2D();
+        $qrWeb = $qr->getBarcodeHTML($result['qrContent'], 'QRCODE', 4, 4);
+        // Pass same variable to queryPayment function
+        return view('generated-qr', compact('result', 'qrWeb'));
+//         return [ request()->method().' '.$urlGenerateQR, $headers, $requestBody, $cachedResult ];
+    }
     public function queryPayment()
     {
         $generateAccessToken = $this->generateAccessToken();
@@ -237,6 +293,55 @@ class YukkApiController extends Controller
         session()->flash('alert', [
             'type' => 'success',
             'title' => 'Transaction history refreshed!',
+            'toast' => false,
+            'position' => 'top-end',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+        return to_route('transactions.index');
+    }
+    public function bulkQueryPaymentStatus()
+    {
+        $generateAccessToken = $this->generateAccessToken();
+        $accessToken = $generateAccessToken['accessToken'];
+        $unique = random_int(12,12).round(microtime(true)*10000);
+        $endpoint = "/1.0/qr/qr-mpm-query";
+        $trxId = base64_decode(request()->input('transactionId'));
+        $refNo = base64_decode(request()->input('refNo'));
+        $partnerRef = base64_decode(request()->input('trx'));
+        $body = [
+            'originalPartnerReferenceNo' => $partnerRef,
+            'serviceCode' => '47',
+            'externalStoreID' => env('YUKK_STORE_ID')
+        ];
+        $minifyRequestBody = json_encode($body);
+        $stringToSign = "POST:"."/1.0/qr/qr-mpm-query:".$accessToken.":".strtolower(hash("sha256", $minifyRequestBody)).":".$this->generateTimestamp();
+        $symmetricSignature = base64_encode(hash_hmac('sha512', $stringToSign, env('YUKK_CLIENT_SECRET'), true));
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer '.$accessToken,
+            'X-TIMESTAMP' => $this->generateTimestamp(),
+            'X-SIGNATURE' => $symmetricSignature,
+            'X-PARTNER-ID' => env('YUKK_CLIENT_ID'),
+            'X-EXTERNAL-ID' => $unique,
+            'CHANNEL-ID' => '00001'
+        ];
+
+        $sendQueryPayment = Http::withHeaders($headers)->post($this->baseUrl.$endpoint, $body);
+        $queryResult = $sendQueryPayment->json();
+        Form::whereIn('trx_no', $refNo)->update([
+            'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
+            'status' => $queryResult['transactionStatusDesc'],
+        ]);
+        Transaction::whereIn('trx_ref_no', $refNo)->update([
+            'payment_status' => $queryResult['transactionStatusDesc'],
+            'paid_at' => Carbon::parse($queryResult['paidTime'])->format('Y-m-d H:i:s'),
+        ]);
+//        dd($partnerRef);
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Selected transaction status updated!',
             'toast' => false,
             'position' => 'top-end',
             'timer' => 2500,

@@ -14,6 +14,7 @@ use App\Livewire\Public\Forms\Buy6Get7Form;
 use App\Livewire\Public\Forms\FormDetail;
 use App\Livewire\Public\Forms\ParticipantFormDetail;
 use App\Livewire\Transactions\TransactionIndex;
+use App\Livewire\Transactions\TransactionManualQR;
 use App\Livewire\Users\Roles\RoleCreate;
 use App\Livewire\Users\Roles\RoleEdit;
 use App\Livewire\Users\Roles\RoleIndex;
@@ -59,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::get('users/edit/{userId}', UserEdit::class)->name('users.edit');
     Route::get('profile', MyProfile::class)->name('profile.show');
     Route::get('transactions', TransactionIndex::class)->name('transactions.index');
+    Route::get('transactions/qr-manual', TransactionManualQR::class)->name('transactions.qr_manual');
     Route::get('roles', RoleIndex::class)->name('roles.index');
     Route::get('roles/create', RoleCreate::class)->name('roles.create');
     Route::get('roles/edit/{roleId}', RoleEdit::class)->name('roles.edit');

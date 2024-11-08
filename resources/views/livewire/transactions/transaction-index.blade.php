@@ -8,6 +8,14 @@
                             <h2 class="fs-5 fw-bold mb-3">{{ __('Transaction History') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
+                                     <div class="row mb-3 add-button">
+                                        <div class="col d-flex justify-content-end pb-3">
+                                            <a href="{{ route('transactions.qr_manual') }}"
+                                                class="btn btn-success ml-3 text-white" wire:navigate><i
+                                                    class="fa fa-plus" aria-hidden="true"></i>{{ __(' Create Manual Transaction')
+                                                }}</a>
+                                        </div>
+                                    </div>
                                     <div class="row filter">
                                         <div class="col">
                                             <div class="d-flex mb-3">
@@ -64,6 +72,8 @@
                                         <div class="col">
                                             <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
                                             <button wire:click="deleteSelected" class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Delete Selected Data')
+                                            }}</button>
+                                            <button wire:click="bulkUpdatePaymentStatus" class="btn btn-success text-white {{ count($selectedItems) ? '' : 'd-none' }}" >{{ __('Update payment status selected data')
                                             }}</button>
                                         </div>
                                     </div>
