@@ -11,7 +11,7 @@ use Livewire\Component;
 class FormEdit extends Component
 {
     use AuthorizesRequests;
-    public $form, $formId, $name_str, $full_name, $email, $nik, $npa, $cabang_pdgi, $phone_number, $attended;
+    public $form, $formId, $name_str, $full_name, $email, $nik, $npa, $cabang_pdgi, $phone_number, $attended, $amount;
     public function mount($formId)
     {
         if(!Auth::user()->hasRole(['Super Admin','Admin','Finance'])) {
@@ -26,6 +26,7 @@ class FormEdit extends Component
         $this->cabang_pdgi = $this->form->cabang_pdgi;
         $this->phone_number = $this->form->phone_number;
         $this->attended = $this->form->attended;
+        $this->amount = $this->form->amount;
     }
     public function update()
     {
@@ -38,6 +39,7 @@ class FormEdit extends Component
             'cabang_pdgi' => $this->cabang_pdgi,
             'phone_number' => $this->phone_number,
             'attended' => $this->attended,
+            'amount' => $this->amount
         ]);
         session()->flash('alert', [
             'type' => 'success',

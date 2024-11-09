@@ -65,6 +65,12 @@
                                                     <input type="text" name="attended" id="attended" class="form-control" wire:model='attended'>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group mb-3">
+                                                    <label for="amount" class="form-label">{{ __('Total Harga') }}</label>
+                                                    <input type="text" name="amount" id="amount" class="form-control" wire:model='amount'>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="d-grid">
                                             <button type="submit" class="btn btn-success text-white">{{ __('Submit') }}</button>
