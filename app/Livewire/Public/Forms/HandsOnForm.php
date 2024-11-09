@@ -76,7 +76,7 @@ class HandsOnForm extends Component
             if ($isSelected) {
                 $selectedHandsOnOption = $this->handsOn->find($optionId);
                 if ($selectedHandsOnOption && !in_array($selectedHandsOnOption->code, ['HO5', 'HO7', 'HO10'])) {
-                    $this->enableHO5andHO7 = true;
+                    $this->enableHO5andHO7 = false;
                     break;
                 }
             }

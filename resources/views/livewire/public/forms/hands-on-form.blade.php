@@ -79,7 +79,7 @@
                                                     <input type="checkbox" name="isHandsOnChecked" id="isHandsOnChecked"
                                                         wire:model='isHandsOnChecked.{{ $ho->id }}'
                                                         value="{{ $ho->id }}" wire:change='calculateTotalAmount'
-                                                        @if (in_array($ho->code, ['HO5', 'HO7', 'HO10', 'HO12'])) disabled @endif>
+                                                        @if (in_array($ho->code, ['HO10', 'HO12'])) disabled @endif>
                                                 </div>
                                                 <div class="col-lg-11">
                                                     <label for="checkedHandsOn">
