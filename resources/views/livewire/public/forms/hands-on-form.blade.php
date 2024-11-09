@@ -64,7 +64,7 @@
                                     wire:model='selectedSeminarId' wire:change='calculateTotalAmount'>
                                     <option value="">{{ __('Choose one...') }}</option>
                                     @foreach ($seminars as $sem)
-                                        <option value="{{ $sem->id }}">{{ $sem->name }} -
+                                        <option value="{{ $sem->id }}" @if ($sem->id == 32) disabled @endif>{{ $sem->name }} -
                                             {{ 'Rp ' . number_format($sem->price, 2, ',', '.') }}</option>
                                     @endforeach
                                 </select>
