@@ -41,15 +41,35 @@
                         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Name</td>
-                                <td style="padding: 8px;">{{ $form->full_name }}</td>
+                                <td style="padding: 8px;">{{ $form['full_name'] }}</td>
                             </tr>
                             <tr>
                                 <td style="padding: 8px; text-align: center; font-weight: bold;">Email</td>
-                                <td style="padding: 8px;">{{ $form->email }}</td>
+                                <td style="padding: 8px;">{{ $form['email'] }}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">Phone</td>
-                                <td style="padding: 8px;">{{ $form->phone }}</td>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">NIK</td>
+                                <td style="padding: 8px;">{{ $form['nik'] }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">NPA</td>
+                                <td style="padding: 8px;">{{ $form['npa'] }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">PDGI Cabang</td>
+                                <td style="padding: 8px;">{{ $form['cabang_pdgi'] ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">Phone Number</td>
+                                <td style="padding: 8px;">{{ $form['phone_number'] }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">Seminar</td>
+                                <td style="padding: 8px;">{{ $form['seminar'] }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">Hands-On</td>
+                                <td style="padding: 8px;">{{ $form['attended'] }}</td>
                             </tr>
                         </table>
                     </td>

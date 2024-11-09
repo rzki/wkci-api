@@ -79,7 +79,11 @@
                                 <td style="padding: 8px;">{{ $handsOn['phone_number'] }}</td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px; text-align: center; font-weight: bold;">Seminar & HO</td>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">Seminar</td>
+                                <td style="padding: 8px;">{{ $handsOn['seminar'] }}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: center; font-weight: bold;">Hands-On</td>
                                 <td style="padding: 8px;">{{ $handsOn['attended'] }}</td>
                             </tr>
                         </table>
