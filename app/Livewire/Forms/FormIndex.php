@@ -11,6 +11,7 @@ use App\Jobs\SendPaidBulkEmailJob;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Mail\HandsOnRegistrationMail;
+use App\Mail\SeminarParticipantEmail;
 use Illuminate\Support\Facades\Storage;
 
 class FormIndex extends Component
@@ -76,7 +77,11 @@ class FormIndex extends Component
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
-        Mail::to($handsOn->email)->send(new HandsOnRegistrationMail($handsOn));
+        if($handsOn->status == 'Paid'){
+            Mail::to($handsOn->email)->send(new SeminarParticipantEmail($handsOn));
+        }else{
+            Mail::to($handsOn->email)->send(new HandsOnRegistrationMail($handsOn));
+        }
         return $this->redirectRoute('forms.index', navigate: true);
     }
     public function export()

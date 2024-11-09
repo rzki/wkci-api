@@ -80,7 +80,7 @@
                                                         wire:model='isHandsOnChecked.{{ $ho->id }}'
                                                         value="{{ $ho->id }}" wire:change='calculateTotalAmount'
                                                         @if (in_array($ho->code, ['HO5', 'HO7'])) @if (!$enableHO5andHO7) disabled @endif
-                                                    @elseif($ho->code === 'HO10') disabled @endif>
+                                                    @elseif(in_array($ho->code, ['HO10', 'HO12'])) disabled @endif>
                                                 </div>
                                                 <div class="col-lg-11">
                                                     <label for="checkedHandsOn">
