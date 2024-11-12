@@ -19,8 +19,26 @@ class FormIndex extends Component
     use WithPagination;
     public $perPage = 5, $search;
     public $form, $formId, $start_date = '', $end_date = '';
-    public $formCollection, $selectedItems = [], $selectedRecipient = [];
+    public $formCollection, $selectAll = false, $selectedItems = [], $selectedRecipient = [];
     protected $listeners = ['deleteConfirmed' => 'delete'];
+
+    public function updatedSelectAll($value)
+    {
+        if($value)
+        {
+            $this->selectedItems = Form::orderByDesc('submitted_date')->paginate($this->perPage)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        }else{
+            $this->selectedItems = [];
+        }
+    }
+    public function updatedSelectedItems()
+    {
+        // Get the IDs for the current page
+        $currentPageIds = Form::orderByDesc('submitted_date')->paginate($this->perPage)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+
+        // Check if all items on the current page are selected
+        $this->selectAll = !array_diff($currentPageIds, $this->selectedItems) ? true : false;
+    }
     public function deleteSelected()
     {
         // Get selected items data
@@ -94,6 +112,7 @@ class FormIndex extends Component
         $formPaid = Form::whereIn('id', $this->selectedItems)->where('status', 'Paid')->get();
         foreach($formPaid as $paid){
             SendPaidBulkEmailJob::dispatch($paid);
+            // Mail::to($paid->email)->queue(new SeminarParticipantEmail($paid));
         }
 
         $this->selectedItems = [];
@@ -111,14 +130,15 @@ class FormIndex extends Component
     #[Title('Forms')]
     public function render()
     {
+        $formData = Form::search($this->search)
+            ->when($this->start_date !== '' && $this->end_date !== '', function ($query) {
+                $query->WhereDate('submitted_date', '>=', $this->start_date)
+                    ->WhereDate('submitted_date', '<=', $this->end_date);
+            })
+            ->orderByDesc('submitted_date')
+            ->paginate($this->perPage);
         return view('livewire.forms.form-index',[
-            'forms' => Form::search($this->search)
-                        ->when($this->start_date !== '' && $this->end_date !== '', function ($query) {
-                            $query->WhereDate('submitted_date', '>=', $this->start_date)
-                            ->WhereDate('submitted_date', '<=', $this->end_date);
-                        })
-                        ->orderByDesc('submitted_date')
-                        ->paginate($this->perPage)
+            'forms' => $formData
         ]);
     }
 }
