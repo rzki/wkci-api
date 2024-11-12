@@ -4,6 +4,7 @@ namespace App\Livewire\Forms\Participants;
 
 use App\Exports\HandsOnFormExport;
 use App\Exports\ParticipantExport;
+use App\Jobs\SendBulkEmailParticipant;
 use App\Mail\HandsOnRegistrationMail;
 use App\Mail\ParticipantFormMail;
 use App\Models\Form;
@@ -20,9 +21,26 @@ class FormParticipantIndex extends Component
     use WithPagination;
     public $perPage = 5;
     public $form, $formId;
-    public $search, $start_date = '', $end_date = '', $selectedItems = [];
+    public $search, $start_date = '', $end_date = '', $selectAll = false, $selectedItems = [];
     protected $listeners = ['deleteConfirmed' => 'delete'];
 
+    public function updatedSelectAll($value)
+    {
+        if($value)
+        {
+            $this->selectedItems = FormParticipant::orderByDesc('submitted_date')->paginate($this->perPage)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        }else{
+            $this->selectedItems = [];
+        }
+    }
+    public function updatedSelectedItems()
+    {
+        // Get the IDs for the current page
+        $currentPageIds = FormParticipant::orderByDesc('submitted_date')->paginate($this->perPage)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+
+        // Check if all items on the current page are selected
+        $this->selectAll = !array_diff($currentPageIds, $this->selectedItems) ? true : false;
+    }
     public function deleteSelected()
     {
         // Delete the selected items
@@ -76,7 +94,14 @@ class FormParticipantIndex extends Component
         Mail::to($participant->email)->send(new ParticipantFormMail($participant));
         return $this->redirectRoute('forms.participant.index', navigate: true);
     }
-
+    public function sendBulkEmail()
+    {
+        $participantData = FormParticipant::where('id', $this->selectedItems)->get();
+        foreach($participantData as $participant)
+        {
+            SendBulkEmailParticipant::dispatch($participant);
+        }
+    }
     public function export()
     {
         $filename = 'JADE_Participant_'.date('d-m-Y').'.xlsx';
