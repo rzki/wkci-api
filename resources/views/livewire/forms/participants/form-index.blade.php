@@ -5,7 +5,6 @@
                 <div class="col-12 px-0">
                     <div class="card border-0 shadow">
                         <div class="card-body">
-                            @dump($selectedItems)
                             <h2 class="fs-5 fw-bold mb-3">{{ __('All Forms Participants') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
