@@ -48,10 +48,7 @@
                                                                         wire:model.live.debounce.500ms='end_date'>
                                                                 </div>
                                                             </div>
-                                                            {{-- <div class="row mt-3">
-                                                                <button type="submit" class="btn btn-success text-white">Submit</button>
-                                                            </div> --}}
-                                                            {{-- </form> --}}
+
                                                         </div>
                                                         <div class="col-lg-4">
 
@@ -131,7 +128,8 @@
                                                         <td>{{ $form->email ?? '' }}</td>
                                                         <td>{{ $form->phone ?? '' }}</td>
                                                         <td>{{ $form->origin ?? '' }}</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) }}</td>
+                                                        <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) }}
+                                                        </td>
                                                         <td>
                                                             <a href="{{ route('forms.participant.detail', $form->formId) }}"
                                                                 class="btn btn-primary">
