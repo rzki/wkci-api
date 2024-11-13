@@ -4,6 +4,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\Forms\FormEdit;
 use App\Livewire\Forms\FormIndex;
 use App\Livewire\Forms\FormImport;
+use App\Livewire\Forms\Participants\FormParticipantEdit;
 use App\Livewire\Forms\Participants\FormParticipantImport;
 use App\Livewire\Forms\Participants\FormParticipantIndex;
 use App\Livewire\MyProfile;
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('forms/edit/{formId}', FormEdit::class)->name('forms.edit');
     Route::get('forms/import', FormImport::class)->name('forms.import');
     Route::get('forms/participants', FormParticipantIndex::class)->name('forms.participant.index');
+    Route::get('forms/participants/{participantId}', FormParticipantEdit::class)->name('forms.participant.edit');
     Route::get('forms/participants/import', FormParticipantImport::class)->name('forms.participant.import');
     Route::get('users', UserIndex::class)->name('users.index');
     Route::get('users/create', UserCreate::class)->name('users.create');
