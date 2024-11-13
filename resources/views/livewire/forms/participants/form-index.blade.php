@@ -5,6 +5,7 @@
                 <div class="col-12 px-0">
                     <div class="card border-0 shadow">
                         <div class="card-body">
+                            @dump($selectedItems)
                             <h2 class="fs-5 fw-bold mb-3">{{ __('All Forms Participants') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
@@ -135,6 +136,11 @@
                                                             <a href="{{ route('forms.participant.detail', $form->formId) }}"
                                                                 class="btn btn-primary">
                                                                 <i class="fas fa-eye"></i>
+                                                                <!-- /.fas -->
+                                                            </a>
+                                                            <a href="{{ route('forms.participant.edit', $form->formId) }}"
+                                                                class="btn btn-info">
+                                                                <i class="fas fa-edit"></i>
                                                                 <!-- /.fas -->
                                                             </a>
                                                             <button class="btn btn-success"

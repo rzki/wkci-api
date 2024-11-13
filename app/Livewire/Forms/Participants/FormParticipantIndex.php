@@ -96,7 +96,7 @@ class FormParticipantIndex extends Component
     }
     public function sendBulkEmail()
     {
-        $participantData = FormParticipant::where('id', $this->selectedItems)->get();
+        $participantData = FormParticipant::whereIn('id', $this->selectedItems)->get();
         foreach($participantData as $participant)
         {
             SendBulkEmailParticipant::dispatch($participant);
