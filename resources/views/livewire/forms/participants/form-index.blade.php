@@ -107,6 +107,7 @@
                                                     <th>{{ __('Email') }}</th>
                                                     <th>{{ __('Phone') }}</th>
                                                     <th>{{ __('Asal Institusi/Perusahaan/Klinik') }}</th>
+                                                    <th>{{ __('Tanggal Registrasi') }}</th>
                                                     <th style="width: 5em;">{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -129,6 +130,7 @@
                                                         <td>{{ $form->email ?? '' }}</td>
                                                         <td>{{ $form->phone ?? '' }}</td>
                                                         <td>{{ $form->origin ?? '' }}</td>
+                                                        <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) }}</td>
                                                         <td>
                                                             <a href="{{ route('forms.participant.detail', $form->formId) }}"
                                                                 class="btn btn-primary">
