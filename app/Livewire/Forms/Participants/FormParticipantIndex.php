@@ -111,13 +111,14 @@ class FormParticipantIndex extends Component
     #[Title('Form Participants')]
     public function render()
     {
-        return view('livewire.forms.participants.form-index',[
-            'forms' => FormParticipant::search($this->search)
+        $formParticipant = FormParticipant::search($this->search)
                         ->when($this->start_date !== '' && $this->end_date !== '', function ($query) {
                             $query->WhereDate('submitted_date', '>=', $this->start_date)
                                 ->WhereDate('submitted_date', '<=', $this->end_date);
                         })
-                        ->orderByDesc('submitted_date')->paginate($this->perPage),
+                        ->orderByDesc('submitted_date')->paginate($this->perPage);
+        return view('livewire.forms.participants.form-index',[
+            'forms' => $formParticipant,
         ]);
     }
 }
