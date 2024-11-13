@@ -101,6 +101,16 @@ class FormParticipantIndex extends Component
         {
             SendBulkEmailParticipant::dispatch($participant);
         }
+        $this->selectedItems = [];
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Email confirmation sent!',
+            'toast' => true,
+            'position' => 'top-end',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
     }
     public function export()
     {
