@@ -14,6 +14,7 @@ class Form extends Model
         $query->where('full_name', 'like', "%{$value}%")
         ->orWhere('name_str', 'like', "%{$value}%")
         ->orWhere('nik', 'like', "%{$value}%")
-        ->orWhere('npa', 'like', "%{$value}%");
+        ->orWhere('npa', 'like', "%{$value}%")
+        ->orWhere('attended', 'like', "%{$value}%");
     }
 }
