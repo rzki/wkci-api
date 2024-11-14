@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Attendances\AttendanceIndex;
 use App\Livewire\Dashboard;
 use App\Livewire\Forms\FormEdit;
 use App\Livewire\Forms\FormIndex;
@@ -61,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::get('users/create', UserCreate::class)->name('users.create');
     Route::get('users/edit/{userId}', UserEdit::class)->name('users.edit');
     Route::get('profile', MyProfile::class)->name('profile.show');
+    Route::get('attendances', AttendanceIndex::class)->name('attendances.index');
     Route::get('transactions', TransactionIndex::class)->name('transactions.index');
     Route::get('transactions/qr-manual', TransactionManualQR::class)->name('transactions.qr_manual');
     Route::get('roles', RoleIndex::class)->name('roles.index');

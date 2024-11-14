@@ -5,16 +5,17 @@
                 <div class="col-12 px-0">
                     <div class="card border-0 shadow">
                         <div class="card-body">
-                            <h2 class="fs-5 fw-bold mb-3">{{ __('Hands-On Forms') }}</h2>
+                            <h2 class="fs-5 fw-bold mb-3">{{ __('All Attendances') }}</h2>
                             <div class="table-wrapper">
                                 <div class="container-fluid px-3">
-                                    <div class="row mb-3 add-button">
+                                    {{-- <div class="row mb-3">
                                         <div class="col d-flex justify-content-end pb-3">
-                                            <a href="{{ route('forms.import') }}"
+                                            <a href="{{ route('forms.participant.import') }}"
                                                 class="btn btn-success ml-3 text-white" wire:navigate><i
-                                                    class="fa fa-upload" aria-hidden="true"></i>{{ __(' Import') }}</a>
+                                                    class="fas fa-upload"
+                                                    aria-hidden="true"></i>{{ __(' Import Data') }}</a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row filter">
                                         <div class="col">
                                             <div class="d-flex mb-3">
@@ -46,6 +47,7 @@
                                                                         wire:model.live.debounce.500ms='end_date'>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                         <div class="col-lg-4">
 
@@ -66,10 +68,10 @@
                                     <div class="row export">
                                         <div class="col">
                                             <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
-                                            <button wire:click="deleteSelected"
+                                            {{-- <button wire:click="deleteSelected"
                                                 class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}">{{ __('Delete Selected Data (' . count($selectedItems) . ')') }}</button>
-                                            <button wire:click="bulkSendEmail"
-                                                class="btn btn-success text-white {{ count($selectedItems) ? '' : 'd-none' }}">{{ __('Send Email to selected data (' . count($selectedItems) . ')') }}</button>
+                                            <button wire:click="sendBulkEmail"
+                                                class="btn btn-success text-white {{ count($selectedItems) ? '' : 'd-none' }}">{{ __('Email Selected Data (' . count($selectedItems) . ')') }}</button> --}}
                                         </div>
                                     </div>
                                     <div class="table-wrapper table-responsive">
@@ -87,112 +89,44 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                                                {{ $forms->links() }}
+                                                {{ $attendance->links() }}
                                             </div>
                                         </div>
                                         <table class="table striped-table text-black text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>
+                                                    {{-- <th>
                                                         <input type="checkbox" name="selectAll" id="selectAll"
                                                             wire:model.live='selectAll'>
-                                                    </th>
-                                                    <th>{{ __('Centang Hadir') }}</th>
+                                                    </th> --}}
                                                     <th style="width: 2em;">No</th>
-                                                    <th>{{ __('Nama (STR)') }}</th>
-                                                    <th>{{ __('Nama (KTP)') }}</th>
-                                                    <th>{{ __('Email') }}</th>
-                                                    <th>{{ __('NIK') }}</th>
-                                                    <th>{{ __('Nomor NPA') }}</th>
-                                                    <th>{{ __('Cabang PDGI') }}</th>
-                                                    <th>{{ __('No Telepon') }}</th>
-                                                    <th>{{ __('Seminar') }}</th>
-                                                    <th>{{ __('Hands-On') }}</th>
-                                                    <th>{{ __('Total') }}</th>
-                                                    <th>{{ __('Paid At') }}</th>
-                                                    <th>{{ __('Payment Status') }}</th>
-                                                    <th>{{ __('Bukti Transfer') }}</th>
-                                                    <th>{{ __('Kode Promo') }}</th>
-                                                    <th>{{ __('Submit Date') }}</th>
-                                                    <th style="width: 5em;">{{ __('Action') }}</th>
+                                                    <th>{{ __('Full Name') }}</th>
+                                                    <th>{{ __('Tipe Peserta') }}</th>
+                                                    <th>{{ __('Tanggal & Jam Hadir') }}</th>
+                                                    <th>{{ __('Checker') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if ($forms->isEmpty())
+                                                @if ($attendance->isEmpty())
                                                     <tr>
-                                                        <td colspan='13' class="text-center">
+                                                        <td colspan='7' class="text-center">
                                                             {{ __('Data not found') }}
                                                         </td>
                                                     </tr>
                                                 @else
-                                                    @foreach ($forms as $form)
-                                                        <tr>
-                                                            <td><input type="checkbox" name="selectedItems"
-                                                                    id="selectedItems" wire:model.live="selectedItems"
-                                                                    value="{{ $form->id }}"></td>
-                                                                    <td><button class="btn btn-success text-white"
-                                                                    wire:click.prevent="attendanceCheck('{{ $form->formId }}')"><i
-                                                                        class="fas fa-check-circle"></i></button></td>
-                                                            <td>{{ $forms->firstItem() + $loop->index }}</td>
-                                                            <td>{{ $form->name_str ?? '' }}</td>
-                                                            <td>{{ $form->full_name ?? '' }}</td>
-                                                            <td>{{ $form->email ?? '' }}</td>
-                                                            <td>{{ $form->nik ?? '' }}</td>
-                                                            <td>{{ $form->npa ?? '' }}</td>
-                                                            <td>{{ $form->cabang_pdgi ?? '' }}</td>
-                                                            <td>{{ $form->phone_number ?? '' }}</td>
-                                                            <td>{{ $form->seminar ?? '' }}</td>
-                                                            <td>{{ $form->attended ?? '' }}</td>
-                                                            @if ($form->amount == null)
-                                                                <td>{{ 'IDR 0,00' }}</td>
-                                                            @elseif($form->amount == '0,00')
-                                                                <td>{{ 'IDR 0,00' }}</td>
-                                                            @else
-                                                                <td>{{ 'IDR ' . number_format($form->amount, 2, '.', ',') }}
-                                                                </td>
-                                                            @endif
-                                                            <td>{{ date('d/m/Y H:i:s', strtotime($form->paid_at)) ?? '-' }}
-                                                            </td>
-                                                            <td>{{ $form->status ?? '' }}</td>
-                                                            @if ($form->trx_history != null)
-                                                                <td>
-                                                                    <a href="{{ $form->trx_history ?? '#' }}"
-                                                                        target="_blank"
-                                                                        class="text-decoration-underline text-info"><i
-                                                                            class="fas
-                                                        fa-up-right-from-square"></i>{{ __(' Lihat Bukti Transfer') }}</a>
-                                                                </td>
-                                                            @else
-                                                                <td>-</td>
-                                                            @endif
-                                                            <td>{{ $form->applied_coupon ?? '' }}</td>
-                                                            @if ($form->submitted_date != null)
-                                                                <td>{{ date('d/m/Y H:i:s', strtotime($form->submitted_date)) ?? '' }}
-                                                                </td>
-                                                            @else
-                                                                <td>{{ date('d/m/Y H:i:s', strtotime($form->created_at)) ?? '' }}
-                                                                </td>
-                                                            @endif
-                                                            <td>
-                                                                <a href="{{ route('forms.hands-on.detail', $form->formId) }}"
-                                                                    class="btn btn-primary"><i
-                                                                        class="fas fa-eye"></i></a>
-                                                                @if (Auth::user()->hasRole(['Super Admin', 'Finance']))
-                                                                    <a href="{{ route('forms.edit', $form->formId) }}"
-                                                                        class="btn btn-info"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button class="btn btn-warning"
-                                                                        wire:click.prevent="sendEmail('{{ $form->formId }}')"><i
-                                                                            class="fas
-                                                            fa-envelope"></i></button>
-                                                                    <button class="btn btn-danger"
-                                                                        wire:click.prevent="deleteConfirm('{{ $form->formId }}')"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
                                                 @endif
+                                                @foreach ($attendance as $att)
+                                                    <tr>
+                                                        {{-- <td><input type="checkbox" name="selectedItems"
+                                                                id="selectedItems" wire:model.live="selectedItems"
+                                                                value="{{ $form->id }}"></td> --}}
+                                                        <td>{{ $attendance->firstItem() + $loop->index }}</td>
+                                                        <td>{{ $att->name ?? '' }}</td>
+                                                        <td>{{ $att->participant_type ?? '' }}</td>
+                                                        <td>{{ date('d/m/Y H:i:s', strtotime($att->attendance_time)) ?? '' }}</td>
+                                                        <td>{{ $att->handler ?? '' }}</td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                         <div class="row my-4">
@@ -209,7 +143,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6 d-flex align-items-center justify-content-end">
-                                                {{ $forms->links() }}
+                                                {{ $attendance->links() }}
                                             </div>
                                         </div>
                                     </div>

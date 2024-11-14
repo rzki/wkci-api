@@ -99,6 +99,7 @@
                                                         <input type="checkbox" name="selectAll" id="selectAll"
                                                             wire:model.live='selectAll'>
                                                     </th>
+                                                    <th>{{ __('Centang Hadir') }}</th>
                                                     <th style="width: 2em;">No</th>
                                                     <th>{{ __('Full Name') }}</th>
                                                     <th>{{ __('Email') }}</th>
@@ -121,7 +122,14 @@
                                                     <tr>
                                                         <td><input type="checkbox" name="selectedItems"
                                                                 id="selectedItems" wire:model.live="selectedItems"
-                                                                value="{{ $form->id }}"></td>
+                                                                value="{{ $form->id }}">
+                                                        </td>
+                                                        <td>
+
+                                                            <button class="btn btn-success text-white"
+                                                                wire:click.prevent="attendanceCheck('{{ $form->formId }}')"><i
+                                                                    class="fas fa-check-circle"></i></button>
+                                                        </td>
                                                         <td>{{ $forms->firstItem() + $loop->index }}</td>
                                                         <td>{{ $form->full_name ?? '' }}</td>
                                                         <td>{{ $form->email ?? '' }}</td>
@@ -140,7 +148,7 @@
                                                                 <i class="fas fa-edit"></i>
                                                                 <!-- /.fas -->
                                                             </a>
-                                                            <button class="btn btn-success"
+                                                            <button class="btn btn-warning"
                                                                 wire:click.prevent="sendEmail('{{ $form->formId }}')"><i
                                                                     class="fas
                                                             fa-envelope"></i></button>

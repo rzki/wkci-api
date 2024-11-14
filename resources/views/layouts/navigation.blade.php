@@ -60,6 +60,17 @@
             </ul>
         </div>
     </li>
+    
+        @if(Auth::user()->hasRole(['Super Admin', 'Admin', 'Finance']))
+            <li class="nav-item {{ request()->routeIs('attendances.index') ? 'active' : '' }}">
+                <a href="{{ route('attendances.index') }}" class="nav-link" wire:navigate>
+                <span class="sidebar-icon me-3">
+                    <i class="fas fa-clipboard-check"></i>
+                </span>
+                    <span class="sidebar-text">{{ __('Attendances') }}</span>
+                </a>
+            </li>
+        @endif
 
     @if(Auth::user()->hasRole(['Super Admin', 'Admin', 'Finance']))
         <li class="nav-item {{ request()->routeIs('transactions.index') ? 'active' : '' }}">

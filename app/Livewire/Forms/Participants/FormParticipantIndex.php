@@ -2,19 +2,23 @@
 
 namespace App\Livewire\Forms\Participants;
 
+use App\Models\Form;
+use Livewire\Component;
+use App\Models\Attendance;
+use Illuminate\Support\Str;
+use Livewire\WithPagination;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Title;
+use App\Models\FormParticipant;
+use Livewire\Attributes\Layout;
+use App\Mail\ParticipantFormMail;
 use App\Exports\HandsOnFormExport;
 use App\Exports\ParticipantExport;
-use App\Jobs\SendBulkEmailParticipant;
-use App\Mail\HandsOnRegistrationMail;
-use App\Mail\ParticipantFormMail;
-use App\Models\Form;
-use App\Models\FormParticipant;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Livewire\Component;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
-use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\HandsOnRegistrationMail;
+use App\Jobs\SendBulkEmailParticipant;
 
 class FormParticipantIndex extends Component
 {
@@ -116,6 +120,32 @@ class FormParticipantIndex extends Component
     {
         $filename = 'JADE_Participant_'.date('d-m-Y').'.xlsx';
         return Excel::download(new ParticipantExport($this->start_date, $this->end_date), $filename);
+    }
+
+    public function attendanceCheck($formId)
+    {
+        $this->formId = $formId;
+        $users = FormParticipant::where('formId', $formId)->first();
+
+        Attendance::create([
+            'attendanceId' => Str::orderedUuid(),
+            'name' => $users->full_name,
+            'participant_type' => 'Participant',
+            'attendance_time' => Carbon::now()->timezone('Asia/Jakarta'),
+            'handler' => Auth::user()->name
+        ]);
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Attendance checked!',
+            'toast' => false,
+            'position' => 'center',
+            'timer' => 1500,
+            // 'progbar' => true,
+            // 'showConfirmButton' => false,
+        ]);
+
+        return $this->redirectRoute('forms.index', navigate:true);
     }
     #[Layout('components.layouts.app')]
     #[Title('Form Participants')]
