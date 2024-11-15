@@ -145,7 +145,7 @@ class FormParticipantIndex extends Component
             // 'showConfirmButton' => false,
         ]);
 
-        return $this->redirectRoute('forms.index', navigate:true);
+        return $this->redirectRoute('forms.participant.index', navigate:true);
     }
     #[Layout('components.layouts.app')]
     #[Title('Form Participants')]
