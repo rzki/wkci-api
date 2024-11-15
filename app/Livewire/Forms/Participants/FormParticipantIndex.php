@@ -56,7 +56,7 @@ class FormParticipantIndex extends Component
             'title' => 'Selected form participant entries deleted successfully!',
             'toast' => true,
             'position' => 'top-right',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -76,7 +76,7 @@ class FormParticipantIndex extends Component
             'title' => 'Participant form entry deleted successfully!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -91,7 +91,7 @@ class FormParticipantIndex extends Component
             'title' => 'Email sent!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -111,7 +111,7 @@ class FormParticipantIndex extends Component
             'title' => 'Email confirmation sent!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);

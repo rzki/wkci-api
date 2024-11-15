@@ -36,7 +36,7 @@ class MyProfile extends Component
             'title' => 'Profile successfully updated!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);

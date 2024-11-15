@@ -37,7 +37,7 @@ class UserIndex extends Component
             'title' => 'User deleted successfully!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -55,7 +55,7 @@ class UserIndex extends Component
             'title' => 'Password reset successfully!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);

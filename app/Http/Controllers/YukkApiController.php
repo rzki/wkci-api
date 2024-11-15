@@ -295,7 +295,7 @@ class YukkApiController extends Controller
             'title' => 'Transaction history refreshed!',
             'toast' => false,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -344,7 +344,7 @@ class YukkApiController extends Controller
             'title' => 'Selected transaction status updated!',
             'toast' => false,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);

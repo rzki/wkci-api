@@ -29,7 +29,7 @@ class TransactionIndex extends Component
             'title' => 'Selected transaction histories deleted successfully!',
             'toast' => true,
             'position' => 'top-right',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -50,7 +50,7 @@ class TransactionIndex extends Component
             'title' => 'Transaction history deleted successfully!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
@@ -85,7 +85,7 @@ class TransactionIndex extends Component
             ]);
         }
     }
-    
+
     #[Title('All Transaction History')]
     public function render()
     {

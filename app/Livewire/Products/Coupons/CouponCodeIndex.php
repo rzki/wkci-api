@@ -32,7 +32,7 @@ class CouponCodeIndex extends Component
             'title' => 'Coupon deleted successfully!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);

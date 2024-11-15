@@ -38,7 +38,7 @@ class ParticipantForm extends Component
             'title' => 'Registrasi berhasil!',
             'toast' => true,
             'position' => 'top-end',
-            'timer' => 2500,
+            'timer' => 1500,
             'progbar' => true,
             'showConfirmButton' => false,
         ]);
