@@ -28,6 +28,6 @@ class SendBulkEmailParticipant implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->participant->email)->send(new ParticipantFormMail($this->participant));
+        Mail::to($this->participant->email)->send(new ParticipantFormMail($this->participant->email));
     }
 }
