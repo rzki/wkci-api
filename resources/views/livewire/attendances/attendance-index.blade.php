@@ -104,6 +104,7 @@
                                                     <th>{{ __('Tipe Peserta') }}</th>
                                                     <th>{{ __('Tanggal & Jam Hadir') }}</th>
                                                     <th>{{ __('Checker') }}</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -125,6 +126,12 @@
                                                         <td>{{ $att->participant_type ?? '' }}</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($att->attendance_time)) ?? '' }}</td>
                                                         <td>{{ $att->handler ?? '' }}</td>
+                                                        <td>
+                                                            <button class="btn btn-danger"
+                                                                wire:click.prevent="deleteConfirm('{{ $att->attendanceId }}')"><i
+                                                                    class="fas fa-trash"></i></button>
+                                                        </td>
+
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -161,7 +168,7 @@
         window.addEventListener('delete-confirmation', event => {
             Swal.fire({
                 title: "Are you sure?",
-                text: "Form entry will be deleted permanently!",
+                text: "Attendance entry will be deleted permanently!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",

@@ -2,16 +2,45 @@
 
 namespace App\Livewire\Attendances;
 
+use App\Exports\AttendanceExport;
 use Livewire\Component;
 use App\Models\Attendance;
-use Livewire\Attributes\Title;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceIndex extends Component
 {
     use WithPagination;
     public $perPage = 5, $search;
-    public $attendances, $start_date = '', $end_date = '';
+    public $attendances, $attendanceId, $start_date = '', $end_date = '';
+    protected $listeners = ['deleteConfirmed' => 'delete'];
+    public function deleteConfirm($attendanceId)
+    {
+        $this->attendanceId = $attendanceId;
+        $this->dispatch('delete-confirmation');
+    }
+    public function delete()
+    {
+        $attendances = Attendance::where('attendanceId', $this->attendanceId)->first();
+        $attendances->delete();
+        session()->flash('alert', [
+            'type' => 'success',
+            'title' => 'Attendance entry deleted successfully!',
+            'toast' => true,
+            'position' => 'top-end',
+            'timer' => 2500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+        return $this->redirectRoute('attendances.index', navigate: true);
+    }
+    public function export()
+    {
+        $filename = 'JADE_Attendance_'.date('d-m-Y').'.xlsx';
+        return Excel::download(new AttendanceExport($this->start_date, $this->end_date), $filename);
+    }
+
     #[Title('Attendance')]
     public function render()
     {
