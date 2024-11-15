@@ -68,9 +68,9 @@
                                     <div class="row export">
                                         <div class="col">
                                             <a href="#export" class="btn btn-primary" wire:click='export'>XLS</a>
-                                            {{-- <button wire:click="deleteSelected"
+                                            <button wire:click="deleteSelected"
                                                 class="btn btn-danger {{ count($selectedItems) ? '' : 'd-none' }}">{{ __('Delete Selected Data (' . count($selectedItems) . ')') }}</button>
-                                            <button wire:click="sendBulkEmail"
+                                            {{-- <button wire:click="sendBulkEmail"
                                                 class="btn btn-success text-white {{ count($selectedItems) ? '' : 'd-none' }}">{{ __('Email Selected Data (' . count($selectedItems) . ')') }}</button> --}}
                                         </div>
                                     </div>
@@ -99,6 +99,7 @@
                                                         <input type="checkbox" name="selectAll" id="selectAll"
                                                             wire:model.live='selectAll'>
                                                     </th> --}}
+                                                    <th></th>
                                                     <th style="width: 2em;">No</th>
                                                     <th>{{ __('Full Name') }}</th>
                                                     <th>{{ __('Tipe Peserta') }}</th>
@@ -121,6 +122,11 @@
                                                         {{-- <td><input type="checkbox" name="selectedItems"
                                                                 id="selectedItems" wire:model.live="selectedItems"
                                                                 value="{{ $form->id }}"></td> --}}
+
+                                                        <td><input type="checkbox" name="selectedItems"
+                                                                id="selectedItems" wire:model.live="selectedItems"
+                                                                value="{{ $att->id }}">
+                                                        </td>
                                                         <td>{{ $attendance->firstItem() + $loop->index }}</td>
                                                         <td>{{ $att->name ?? '' }}</td>
                                                         <td>{{ $att->participant_type ?? '' }}</td>

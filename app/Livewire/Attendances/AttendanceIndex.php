@@ -14,7 +14,26 @@ class AttendanceIndex extends Component
     use WithPagination;
     public $perPage = 5, $search;
     public $attendances, $attendanceId, $start_date = '', $end_date = '';
+    public $selectedItems = [];
     protected $listeners = ['deleteConfirmed' => 'delete'];
+
+    public function deleteSelected()
+    {
+        // Delete the selected items
+        Attendance::whereIn('id', $this->selectedItems)->delete();
+        // Reset selected items and reload the items
+        $this->selectedItems = [];
+        session()->flash('alert',  [
+            'type' => 'success',
+            'title' => 'Selected attendance entries deleted successfully!',
+            'toast' => true,
+            'position' => 'top-right',
+            'timer' => 1500,
+            'progbar' => true,
+            'showConfirmButton' => false,
+        ]);
+        return $this->redirectRoute('attendances.index', navigate: true);
+    }
     public function deleteConfirm($attendanceId)
     {
         $this->attendanceId = $attendanceId;
